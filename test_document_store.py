@@ -4,10 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from document_store import (calculate_sha256,
-                            save_document,
-                            list_documents,
-                            update_document_metadata,)
+from document_store import (
+    calculate_sha256,
+    save_document,
+    list_documents,
+    update_document_metadata,
+    save_chunks,
+)
 
 
 class TestCalculateSha256:
@@ -27,7 +30,9 @@ class TestCalculateSha256:
         result = calculate_sha256(content)
         assert len(result) == 64
         # 空字符串的SHA256哈希值是已知的
-        assert result == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        assert (
+            result == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        )
 
     def test_calculate_sha256_unicode_content(self):
         """测试Unicode内容"""
@@ -132,7 +137,17 @@ class TestSaveDocument:
 
     def test_save_document_various_extensions(self):
         """测试各种扩展名"""
-        extensions = [".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".jpg", ".png", ".gif"]
+        extensions = [
+            ".doc",
+            ".docx",
+            ".xls",
+            ".xlsx",
+            ".ppt",
+            ".pptx",
+            ".jpg",
+            ".png",
+            ".gif",
+        ]
 
         with tempfile.TemporaryDirectory() as temp_dir:
             for ext in extensions:
@@ -294,7 +309,9 @@ class TestListDocuments:
             content = b"test content for integrity check"
             file_hash = calculate_sha256(content)
 
-            saved_metadata = save_document(documents_dir, original_name, content, file_hash)
+            saved_metadata = save_document(
+                documents_dir, original_name, content, file_hash
+            )
             documents = list_documents(documents_dir)
 
             assert len(documents) == 1
@@ -303,7 +320,10 @@ class TestListDocuments:
             # 验证所有字段都正确返回
             assert listed_metadata["document_id"] == saved_metadata["document_id"]
             assert listed_metadata["original_name"] == saved_metadata["original_name"]
-            assert listed_metadata["stored_file_name"] == saved_metadata["stored_file_name"]
+            assert (
+                listed_metadata["stored_file_name"]
+                == saved_metadata["stored_file_name"]
+            )
             assert listed_metadata["extension"] == saved_metadata["extension"]
             assert listed_metadata["file_hash"] == saved_metadata["file_hash"]
             assert listed_metadata["status"] == saved_metadata["status"]
@@ -342,19 +362,17 @@ class TestListDocuments:
 
             # 断言：旧字段没有丢失
             assert updated_metadata["document_id"] == original_metadata["document_id"]
-            assert updated_metadata["original_name"] == original_metadata["original_name"]
+            assert (
+                updated_metadata["original_name"] == original_metadata["original_name"]
+            )
             assert updated_metadata["file_hash"] == original_metadata["file_hash"]
 
             # 断言：更新结果真的写入了磁盘
             metadata_path = (
-                    documents_dir
-                    / original_metadata["document_id"]
-                    / "metadata.json"
+                documents_dir / original_metadata["document_id"] / "metadata.json"
             )
 
-            saved_metadata = json.loads(
-                metadata_path.read_text(encoding="utf-8")
-            )
+            saved_metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
 
             assert saved_metadata["status"] == "processed"
             assert saved_metadata["character_count"] == 5
@@ -372,3 +390,60 @@ class TestListDocuments:
                         "status": "processed",
                     },
                 )
+
+    class TestSaveChunks:
+        """测试 save_chunks 函数"""
+
+        def test_save_chunks_normal(self):
+            """测试正常保存 chunks 并返回数量"""
+            with tempfile.TemporaryDirectory() as temp_dir:
+                documents_dir = Path(temp_dir)
+                content = b"hello"
+                file_hash = calculate_sha256(content)
+
+                metadata = save_document(
+                    documents_dir,
+                    "test.txt",
+                    content,
+                    file_hash,
+                )
+
+                chunks = [
+                    {
+                        "chunk_id": f"{metadata['document_id']}_chunk_000000",
+                        "document_id": metadata["document_id"],
+                        "chunk_index": 0,
+                        "content": "hello",
+                        "heading": None,
+                        "section_id": None,
+                        "previous_chunk_id": None,
+                        "next_chunk_id": None,
+                    }
+                ]
+
+                chunk_count = save_chunks(
+                    documents_dir,
+                    metadata["document_id"],
+                    chunks,
+                )
+
+                assert chunk_count == 1
+
+                chunks_path = documents_dir / metadata["document_id"] / "chunks.json"
+                assert chunks_path.exists()
+
+                saved_chunks = json.loads(chunks_path.read_text(encoding="utf-8"))
+
+                assert saved_chunks == chunks
+
+        def test_save_chunks_missing_document_raises(self):
+            """测试文档目录不存在时抛出 FileNotFoundError"""
+            with tempfile.TemporaryDirectory() as temp_dir:
+                documents_dir = Path(temp_dir)
+
+                with pytest.raises(FileNotFoundError):
+                    save_chunks(
+                        documents_dir,
+                        "missing-document-id",
+                        [],
+                    )
