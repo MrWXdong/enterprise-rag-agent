@@ -9,7 +9,7 @@ class TestEmbeddingService:
 
     def test_embedding_dimension(self):
         vectors = embed_texts(["测试文本"])
-        expected_dimension = get_embedding_model().get_sentence_embedding_dimension()
+        expected_dimension = get_embedding_model().get_embedding_dimension()
 
         assert len(vectors) == 1
         assert len(vectors[0]) == expected_dimension
