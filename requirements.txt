@@ -6,3 +6,4 @@ httpx
 openai
 python-multipart
 pytest
+sentence-transformers
