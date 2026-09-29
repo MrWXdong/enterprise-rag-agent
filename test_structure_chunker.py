@@ -1,7 +1,9 @@
+import pytest
 from structure_chunker import (
     detect_heading_type,
     is_heading,
     split_into_sections,
+    split_section_by_size,
 )
 
 
@@ -117,3 +119,114 @@ class TestSplitIntoSections:
         assert len(sections) == 1
         assert sections[0]["heading"] == "第二条 住宿标准"
         assert sections[0]["body"] == "一类城市每晚最高六百元。"
+
+
+class TestSplitSectionBySize:
+    """测试结构 section 的长度控制切分"""
+
+    def test_short_section_returns_one_chunk(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": "第四条 住宿费用标准",
+            "heading_type": "article",
+            "body": "一类城市每晚最高六百元。",
+        }
+
+        chunks = split_section_by_size(
+            section,
+            chunk_size=500,
+            overlap=50,
+        )
+
+        assert len(chunks) == 1
+        assert chunks[0]["chapter"] == "第一章 公司制度"
+        assert chunks[0]["heading"] == "第四条 住宿费用标准"
+        assert chunks[0]["heading_type"] == "article"
+        assert chunks[0]["chunk_index_in_section"] == 0
+        assert chunks[0]["content"].startswith("第四条 住宿费用标准")
+        assert "一类城市每晚最高六百元" in chunks[0]["content"]
+
+    def test_long_section_returns_multiple_chunks(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": "第四条 住宿费用标准",
+            "heading_type": "article",
+            "body": "住宿费用标准相关内容。" * 50,
+        }
+
+        chunks = split_section_by_size(
+            section,
+            chunk_size=100,
+            overlap=10,
+        )
+
+        assert len(chunks) > 1
+        assert [chunk["chunk_index_in_section"] for chunk in chunks] == list(
+            range(len(chunks))
+        )
+
+        for chunk in chunks:
+            assert chunk["chapter"] == "第一章 公司制度"
+            assert chunk["heading"] == "第四条 住宿费用标准"
+            assert chunk["heading_type"] == "article"
+            assert chunk["content"].startswith("第四条 住宿费用标准")
+            assert len(chunk["content"]) <= 100
+
+    def test_uses_chapter_when_heading_is_none(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": None,
+            "heading_type": None,
+            "body": "这是章节正文。",
+        }
+
+        chunks = split_section_by_size(
+            section,
+            chunk_size=500,
+            overlap=50,
+        )
+
+        assert len(chunks) == 1
+        assert chunks[0]["heading"] is None
+        assert chunks[0]["heading_type"] is None
+        assert chunks[0]["content"].startswith("第一章 公司制度")
+
+    def test_empty_body_returns_empty_list(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": None,
+            "heading_type": None,
+            "body": "   ",
+        }
+
+        assert split_section_by_size(section) == []
+
+    def test_chunk_size_too_small_raises_error(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": "第四条 住宿费用标准",
+            "heading_type": "article",
+            "body": "正文内容",
+        }
+
+        with pytest.raises(ValueError):
+            split_section_by_size(
+                section,
+                chunk_size=5,
+                overlap=1,
+            )
+
+    def test_overlap_too_large_raises_error(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": "第四条 住宿费用标准",
+            "heading_type": "article",
+            "body": "正文内容",
+        }
+
+        with pytest.raises(ValueError):
+            split_section_by_size(
+                section,
+                chunk_size=20,
+                overlap=16,
+            )
