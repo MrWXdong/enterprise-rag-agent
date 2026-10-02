@@ -5,5 +5,4 @@ __pycache__/
 .idea/
 data/
 .pytest_cache/
-work/
 models/
