@@ -7,3 +7,5 @@ openai
 python-multipart
 pytest
 sentence-transformers
+psycopg[binary]
+pgvector

@@ -1,5 +1,8 @@
 import re
-from text_processor import split_text
+from text_processor import (
+    split_text,
+    split_text_by_sentences,
+)
 
 CHAPTER_PATTERN = re.compile(r"^第[一二三四五六七八九十百零〇万千两\d]+章(?:\s|$)")
 ARTICLE_PATTERN = re.compile(r"^第[一二三四五六七八九十百零〇万千两\d]+条(?:\s|$)")
@@ -135,6 +138,50 @@ def split_section_by_size(
     )
 
     chunks: list[dict] = []
+    for index, body_chunk in enumerate(body_chunks):
+        content = f"{title_prefix}{body_chunk}".strip()
+
+        chunks.append(
+            {
+                "chapter": chapter,
+                "heading": heading,
+                "heading_type": heading_type,
+                "chunk_index_in_section": index,
+                "content": content,
+            }
+        )
+    return chunks
+
+
+def split_section_by_sentences_size(
+    section: dict,
+    chunk_size: int = 500,
+    overlap: int = 50,
+) -> list[dict]:
+    chapter = section.get("chapter")
+    heading = section.get("heading")
+    heading_type = section.get("heading_type")
+    body = section.get("body", "").strip()
+
+    if not body:
+        return []
+    title = heading or chapter or ""
+    title_prefix = f"{title}\n" if title else ""
+
+    if chunk_size <= len(title_prefix):
+        raise ValueError("chunk_size必须大于标题长度")
+    body_chunk_size = chunk_size - len(title_prefix)
+
+    if overlap >= body_chunk_size:
+        raise ValueError("overlap必须小于正文文本的分块长度")
+
+    body_chunks = split_text_by_sentences(
+        body,
+        chunk_size=body_chunk_size,
+        overlap=overlap,
+    )
+    chunks: list[dict] = []
+
     for index, body_chunk in enumerate(body_chunks):
         content = f"{title_prefix}{body_chunk}".strip()
 

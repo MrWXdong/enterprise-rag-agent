@@ -2,6 +2,7 @@ from text_processor import split_text
 from structure_chunker import (
     split_into_sections,
     split_section_by_size,
+    split_section_by_sentences_size,
 )
 
 
@@ -65,4 +66,25 @@ def build_structure_chunks(
             overlap=overlap,
         )
         chunks.extend(section_chunks)
+    return attach_chunk_links(document_id, chunks)
+
+
+def build_structure_sentence_chunks(
+    document_id: str,
+    text: str,
+    chunk_size: int = 500,
+    overlap: int = 50,
+) -> list[dict]:
+    sections = split_into_sections(text)
+
+    chunks: list[dict] = []
+
+    for section in sections:
+        section_chunks = split_section_by_sentences_size(
+            section,
+            chunk_size=chunk_size,
+            overlap=overlap,
+        )
+        chunks.extend(section_chunks)
+
     return attach_chunk_links(document_id, chunks)
