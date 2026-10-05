@@ -6,3 +6,6 @@ __pycache__/
 data/
 .pytest_cache/
 models/
+work/
+work_*/
+chunk_preview.py

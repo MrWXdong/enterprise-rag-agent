@@ -4,7 +4,7 @@ from openai import OpenAI
 from config import settings
 from pathlib import Path
 from document_parser import parse_document
-from pgvector_retriever import store_chunks
+from pgvector_retriever import store_chunks, search_chunks
 from chunk_builder import build_structure_sentence_chunks
 from document_store import (
     calculate_sha256,
@@ -43,6 +43,45 @@ def chat(request: ChatRequest):
     if not settings.llm_api_key:
         return {"answer": "请先在.env文件中配置LLM_API_KEY"}
 
+    retrieved_chunks = search_chunks(
+        request.question,
+        top_k=5,
+    )
+
+    if not retrieved_chunks:
+        return {
+            "answer": "知识库中没有足够依据回答该问题。",
+            "sources": [],
+        }
+
+    context_blocks = []
+
+    for index, chunk in enumerate(retrieved_chunks, start=1):
+        context_blocks.append(
+            f"[资料{index}]\n"
+            f"文档ID：{chunk['document_id']}\n"
+            f"章节：{chunk.get('chapter')or"无"}\n"
+            f"小标题: {chunk.get('heading')or"无"}\n"
+            f"相似度：{chunk["score"]:.4f}\n"
+            f"内容：{chunk['content']}"
+        )
+    context = "\n\n".join(context_blocks)
+    prompt = f"""你是一个企业知识库问答助手。
+    
+    请严格遵守以下规则：
+1. 只能根据提供的资料回答。
+2. 不要编造资料中没有的信息。
+3. 如果资料不足以回答，请明确说明无法回答。
+4. 回答应简洁、准确，并尽量引用对应资料编号。
+5. 不要输出无关内容。
+
+资料：
+{context}
+
+用户问题：
+{request.question}
+"""
+
     client = OpenAI(
         api_key=settings.llm_api_key,
         base_url=settings.llm_base_url,
@@ -51,12 +90,32 @@ def chat(request: ChatRequest):
     response = client.chat.completions.create(
         model=settings.llm_model,
         messages=[
-            {"role": "user", "content": request.question},
+            {
+                "role": "system",
+                "content": "你只基于用户提供的知识库资料回答问题。",
+            },
+            {
+                "role": "user",
+                "content": prompt,
+            },
         ],
     )
 
     answer = response.choices[0].message.content
-    return {"answer": answer}
+    sources = [
+        {
+            "chunk_id": chunk["chunk_id"],
+            "document_id": chunk["document_id"],
+            "chapter": chunk.get("chapter"),
+            "heading": chunk.get("heading"),
+            "score": chunk["score"],
+        }
+        for chunk in retrieved_chunks
+    ]
+    return {
+        "answer": answer,
+        "sources": sources,
+    }
 
 
 @app.post("/documents/upload", summary="上传文档到本地知识库")
@@ -100,7 +159,7 @@ async def upload_document(file: UploadFile = File(...)):
         DOCUMENTS_DIR,
         metadata["document_id"],
         {
-            "status": "processed",
+            "status": "vectorized",
             "character_count": len(text),
             "chunk_count": chunk_count,
         },
