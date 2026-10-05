@@ -4,7 +4,8 @@ from openai import OpenAI
 from config import settings
 from pathlib import Path
 from document_parser import parse_document
-from chunk_builder import build_chunks
+from pgvector_retriever import store_chunks
+from chunk_builder import build_structure_sentence_chunks
 from document_store import (
     calculate_sha256,
     save_document,
@@ -78,9 +79,11 @@ async def upload_document(file: UploadFile = File(...)):
     )
     text = parse_document(document_path)
 
-    chunks = build_chunks(
+    chunks = build_structure_sentence_chunks(
         metadata["document_id"],
         text,
+        chunk_size=500,
+        overlap=50,
     )
 
     chunk_count = save_chunks(
@@ -88,6 +91,10 @@ async def upload_document(file: UploadFile = File(...)):
         metadata["document_id"],
         chunks,
     )
+
+    stored_count = store_chunks(chunks)
+    if stored_count != chunk_count:
+        raise RuntimeError("本地chunk数量与数据库写入数量不一致")
 
     metadata = update_document_metadata(
         DOCUMENTS_DIR,
@@ -100,7 +107,7 @@ async def upload_document(file: UploadFile = File(...)):
     )
 
     return {
-        "status": "success",
+        "status": "vectorized",
         "document": metadata,
     }
 
