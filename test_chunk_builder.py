@@ -1,4 +1,8 @@
-from chunk_builder import build_chunks, build_structure_chunks
+from chunk_builder import (
+    build_chunks,
+    build_structure_chunks,
+    build_structure_sentence_chunks,
+)
 
 
 class TestBuildChunks:
@@ -149,3 +153,52 @@ class TestBuildStructureChunks:
         )
 
         assert chunks == []
+
+
+class TestBuildStructureSentenceChunks:
+    """测试结构加句子感知的最终 chunks"""
+
+    def test_preserve_metadata_and_links(self):
+        text = """第一章 差旅制度
+第一条 适用范围
+本制度适用于全体员工。
+第二条 住宿标准
+一类城市每晚最高六百元。
+"""
+
+        chunks = build_structure_sentence_chunks(
+            "doc-1",
+            text,
+            chunk_size=500,
+            overlap=50,
+        )
+
+        assert len(chunks) == 2
+        assert chunks[0]["chapter"] == "第一章 差旅制度"
+        assert chunks[0]["heading"] == "第一条 适用范围"
+        assert chunks[0]["heading_type"] == "article"
+        assert chunks[0]["chunk_id"] == "doc-1_chunk_000000"
+        assert chunks[0]["next_chunk_id"] == "doc-1_chunk_000001"
+
+        assert chunks[1]["previous_chunk_id"] == "doc-1_chunk_000000"
+        assert chunks[1]["next_chunk_id"] is None
+
+    def test_chunk_content_ends_with_punctuation_when_possible(self):
+        text = """第一章 差旅制度
+第四条 住宿费用标准
+第一句话。第二句话！第三句话？第四句话。
+"""
+
+        chunks = build_structure_sentence_chunks(
+            "doc-1",
+            text,
+            chunk_size=50,
+            overlap=5,
+        )
+
+        assert len(chunks) > 1
+        assert (
+            chunks[0]["content"].endswith("。")
+            or chunks[0]["content"].endswith("！")
+            or chunks[0]["content"].endswith("？")
+        )

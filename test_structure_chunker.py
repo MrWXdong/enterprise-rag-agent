@@ -4,6 +4,7 @@ from structure_chunker import (
     is_heading,
     split_into_sections,
     split_section_by_size,
+    split_section_by_sentences_size,
 )
 
 
@@ -230,3 +231,75 @@ class TestSplitSectionBySize:
                 chunk_size=20,
                 overlap=16,
             )
+
+
+class TestSplitSectionBySentencesSize:
+    """测试结构 section 的句子感知切分"""
+
+    class TestSplitSectionBySentencesSize:
+        """测试结构 section 的句子感知切分"""
+
+        def test_preserve_heading_metadata(self):
+            section = {
+                "chapter": "第一章 公司制度",
+                "heading": "第四条 住宿费用标准",
+                "heading_type": "article",
+                "body": "第一句话。第二句话！第三句话？",
+            }
+
+            chunks = split_section_by_sentences_size(
+                section,
+                chunk_size=30,
+                overlap=5,
+            )
+
+            assert len(chunks) >= 1
+
+            for chunk in chunks:
+                assert chunk["chapter"] == "第一章 公司制度"
+                assert chunk["heading"] == "第四条 住宿费用标准"
+                assert chunk["heading_type"] == "article"
+                assert chunk["content"].startswith("第四条 住宿费用标准")
+
+                body_text = chunk["content"].split("\n", 1)[-1]
+
+                assert body_text.endswith(
+                    (
+                        "。",
+                        "！",
+                        "？",
+                        "；",
+                        "…",
+                        "。”",
+                        "！”",
+                        "？”",
+                    )
+                )
+
+    def test_empty_body_returns_empty_list(self):
+        section = {
+            "chapter": "第一章 公司制度",
+            "heading": None,
+            "heading_type": None,
+            "body": "   ",
+        }
+
+        assert split_section_by_sentences_size(section) == []
+
+    def test_quoted_sentence_is_not_cut(self):
+        section = {
+            "chapter": "第一章 对话测试",
+            "heading": "第一条 问候",
+            "heading_type": "article",
+            "body": "你好：“你好。”我们继续。",
+        }
+
+        chunks = split_section_by_sentences_size(
+            section,
+            chunk_size=100,
+            overlap=10,
+        )
+
+        combined = "".join(chunk["content"] for chunk in chunks)
+
+        assert "你好：“你好。”" in combined
