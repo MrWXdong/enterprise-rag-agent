@@ -104,3 +104,37 @@ def save_chunks(
     )
 
     return len(chunks)
+
+
+def find_document_by_hash(
+    documents_dir: Path,
+    file_hash: str,
+) -> dict | None:
+    for metadata in list_documents(documents_dir):
+        if metadata.get("file_hash") == file_hash:
+            return metadata
+    return None
+
+
+def add_document_alias(
+    documents_dir: Path,
+    document_id: str,
+    alias_name: str,
+) -> dict:
+    document_dir = documents_dir / document_id
+    metadata_path = document_dir / METADATA_FILENAME
+
+    if not metadata_path.exists():
+        raise FileNotFoundError(f"metadata.json不存在：{metadata_path}")
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    aliases = metadata.get("aliases", [])
+
+    if alias_name != metadata.get("original_name") and alias_name not in aliases:
+        aliases.append(alias_name)
+    metadata["aliases"] = aliases
+
+    metadata_path.write_text(
+        json.dumps(metadata, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    return metadata

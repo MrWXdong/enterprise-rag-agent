@@ -1,3 +1,4 @@
+from typing import Any
 from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from openai import OpenAI
@@ -6,12 +7,18 @@ from pathlib import Path
 from document_parser import parse_document
 from pgvector_retriever import store_chunks, search_chunks
 from chunk_builder import build_structure_sentence_chunks
+from prompt_builder import (
+    RAG_SYSTEM_PROMPT,
+    build_rag_user_prompt,
+)
 from document_store import (
     calculate_sha256,
     save_document,
     list_documents,
     update_document_metadata,
     save_chunks,
+    find_document_by_hash,
+    add_document_alias,
 )
 
 app = FastAPI(title="企业级RAG智能知识库", version="0.2.0")
@@ -54,54 +61,34 @@ def chat(request: ChatRequest):
             "sources": [],
         }
 
-    context_blocks = []
-
-    for index, chunk in enumerate(retrieved_chunks, start=1):
-        context_blocks.append(
-            f"[资料{index}]\n"
-            f"文档ID：{chunk['document_id']}\n"
-            f"章节：{chunk.get('chapter')or"无"}\n"
-            f"小标题: {chunk.get('heading')or"无"}\n"
-            f"相似度：{chunk["score"]:.4f}\n"
-            f"内容：{chunk['content']}"
-        )
-    context = "\n\n".join(context_blocks)
-    prompt = f"""你是一个企业知识库问答助手。
-    
-    请严格遵守以下规则：
-1. 只能根据提供的资料回答。
-2. 不要编造资料中没有的信息。
-3. 如果资料不足以回答，请明确说明无法回答。
-4. 回答应简洁、准确，并尽量引用对应资料编号。
-5. 不要输出无关内容。
-
-资料：
-{context}
-
-用户问题：
-{request.question}
-"""
-
+    user_prompt = build_rag_user_prompt(
+        request.question,
+        retrieved_chunks,
+    )
     client = OpenAI(
         api_key=settings.llm_api_key,
         base_url=settings.llm_base_url,
     )
 
-    response = client.chat.completions.create(
-        model=settings.llm_model,
-        messages=[
+    messages: Any = (
+        [
             {
                 "role": "system",
-                "content": "你只基于用户提供的知识库资料回答问题。",
+                "content": RAG_SYSTEM_PROMPT,
             },
             {
                 "role": "user",
-                "content": prompt,
+                "content": user_prompt,
             },
         ],
     )
 
-    answer = response.choices[0].message.content
+    response = client.chat.completions.create(
+        model=settings.llm_model,
+        messages=messages,
+    )
+
+    answer = response.choices[0].message.content or ""
     sources = [
         {
             "chunk_id": chunk["chunk_id"],
@@ -127,6 +114,19 @@ async def upload_document(file: UploadFile = File(...)):
     content = await file.read()
     file_hash = calculate_sha256(content)
 
+    existing_metadata = find_document_by_hash(
+        DOCUMENTS_DIR,
+        file_hash,
+    )
+
+    if existing_metadata is not None:
+        metadata = add_document_alias(
+            DOCUMENTS_DIR,
+            existing_metadata["document_id"],
+            safe_name,
+        )
+
+        return {"status": "duplicate", "document": metadata, "message": "复用已有文档"}
     metadata = save_document(
         DOCUMENTS_DIR,
         safe_name,

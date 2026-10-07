@@ -10,6 +10,8 @@ from document_store import (
     list_documents,
     update_document_metadata,
     save_chunks,
+    find_document_by_hash,
+    add_document_alias,
 )
 
 
@@ -447,3 +449,110 @@ class TestListDocuments:
                         "missing-document-id",
                         [],
                     )
+
+
+class TestDocumentDeduplication:
+    """测试文件哈希去重和文件名别名"""
+
+    def test_find_document_by_hash(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            documents_dir = Path(temp_dir)
+            content = b"same content"
+            file_hash = calculate_sha256(content)
+
+            original = save_document(
+                documents_dir,
+                "original.txt",
+                content,
+                file_hash,
+            )
+
+            found = find_document_by_hash(
+                documents_dir,
+                file_hash,
+            )
+
+            assert found is not None
+            assert found["document_id"] == original["document_id"]
+            assert found["original_name"] == "original.txt"
+
+    def test_find_document_by_hash_returns_none(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            documents_dir = Path(temp_dir)
+
+            found = find_document_by_hash(
+                documents_dir,
+                "missing-hash",
+            )
+
+            assert found is None
+
+    def test_add_document_alias(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            documents_dir = Path(temp_dir)
+            content = b"same content"
+            file_hash = calculate_sha256(content)
+
+            original = save_document(
+                documents_dir,
+                "original.txt",
+                content,
+                file_hash,
+            )
+
+            updated = add_document_alias(
+                documents_dir,
+                original["document_id"],
+                "another-name.txt",
+            )
+
+            assert updated["original_name"] == "original.txt"
+            assert updated["aliases"] == ["another-name.txt"]
+
+    def test_add_document_alias_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            documents_dir = Path(temp_dir)
+            content = b"same content"
+            file_hash = calculate_sha256(content)
+
+            original = save_document(
+                documents_dir,
+                "original.txt",
+                content,
+                file_hash,
+            )
+
+            add_document_alias(
+                documents_dir,
+                original["document_id"],
+                "another-name.txt",
+            )
+
+            updated = add_document_alias(
+                documents_dir,
+                original["document_id"],
+                "another-name.txt",
+            )
+
+            assert updated["aliases"] == ["another-name.txt"]
+
+    def test_original_name_is_not_added_as_alias(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            documents_dir = Path(temp_dir)
+            content = b"same content"
+            file_hash = calculate_sha256(content)
+
+            original = save_document(
+                documents_dir,
+                "original.txt",
+                content,
+                file_hash,
+            )
+
+            updated = add_document_alias(
+                documents_dir,
+                original["document_id"],
+                "original.txt",
+            )
+
+            assert updated["aliases"] == []

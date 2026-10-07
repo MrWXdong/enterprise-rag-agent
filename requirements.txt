@@ -9,3 +9,4 @@ pytest
 sentence-transformers
 psycopg[binary]
 pgvector
+pydantic
