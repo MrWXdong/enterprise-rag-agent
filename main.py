@@ -5,7 +5,7 @@ from openai import OpenAI
 from config import settings
 from pathlib import Path
 from document_parser import parse_document
-from pgvector_retriever import store_chunks, search_chunks
+from pgvector_retriever import store_chunks, search_chunks_with_context
 from chunk_builder import build_structure_sentence_chunks
 from prompt_builder import (
     RAG_SYSTEM_PROMPT,
@@ -50,7 +50,7 @@ def chat(request: ChatRequest):
     if not settings.llm_api_key:
         return {"answer": "请先在.env文件中配置LLM_API_KEY"}
 
-    retrieved_chunks = search_chunks(
+    retrieved_chunks = search_chunks_with_context(
         request.question,
         top_k=5,
     )
@@ -68,20 +68,20 @@ def chat(request: ChatRequest):
     client = OpenAI(
         api_key=settings.llm_api_key,
         base_url=settings.llm_base_url,
+        timeout=30.0,
+        max_retries=2,
     )
 
-    messages: Any = (
-        [
-            {
-                "role": "system",
-                "content": RAG_SYSTEM_PROMPT,
-            },
-            {
-                "role": "user",
-                "content": user_prompt,
-            },
-        ],
-    )
+    messages: Any = [
+        {
+            "role": "system",
+            "content": RAG_SYSTEM_PROMPT,
+        },
+        {
+            "role": "user",
+            "content": user_prompt,
+        },
+    ]
 
     response = client.chat.completions.create(
         model=settings.llm_model,
