@@ -1,0 +1,97 @@
+{
+  "document_id": "a4ea312ba60f462294dc1244952e2c44",
+  "version": "v1",
+  "document_name": "chunk_test_document.txt",
+  "items": [
+    {
+      "id": "q001",
+      "question": "一类城市普通员工住宿费每天最高多少？",
+      "expected_answer": "600元",
+      "answer_keywords": ["600元"],
+      "relevant_headings": ["第四条 住宿费用标准"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q002",
+      "question": "二类城市部门负责人住宿费每晚最高多少？",
+      "expected_answer": "600元",
+      "answer_keywords": ["600元"],
+      "relevant_headings": ["第四条 住宿费用标准"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q003",
+      "question": "三类城市普通员工住宿费每晚最高多少？",
+      "expected_answer": "350元",
+      "answer_keywords": ["350元"],
+      "relevant_headings": ["第四条 住宿费用标准"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q004",
+      "question": "一类城市每天餐饮补贴是多少？",
+      "expected_answer": "120元",
+      "answer_keywords": ["120元"],
+      "relevant_headings": ["第五条 餐饮补贴"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000005"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q005",
+      "question": "出差结束后最晚多久提交报销？",
+      "expected_answer": "10个工作日",
+      "answer_keywords": ["10个工作日"],
+      "relevant_headings": ["第六条 费用报销要求"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000006"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q006",
+      "question": "住宿标准和餐饮补贴分别是多少？",
+      "expected_answer": "住宿按一二三类城市不同标准执行，餐饮补贴也按城市分类。",
+      "answer_keywords": ["600元", "450元", "350元", "120元", "100元", "80元"],
+      "relevant_headings": ["第四条 住宿费用标准", "第五条 餐饮补贴"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004","a4ea312ba60f462294dc1244952e2c44_chunk_000005"],
+      "category": "cross_chunk"
+    },
+    {
+      "id": "q007",
+      "question": "住宿费用超出标准时怎么处理？",
+      "expected_answer": "超出标准的部分原则上由员工自行承担。",
+      "answer_keywords": ["超出标准", "自行承担"],
+      "relevant_headings": ["第四条 住宿费用标准"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004"],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q008",
+      "question": "账号密码怎么设置？",
+      "expected_answer": "密码至少12位，并开启多因素认证。",
+      "answer_keywords": ["12位", "多因素认证"],
+      "relevant_headings": ["第十二条 账号与密码"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000012"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q009",
+      "question": "公司董事长私人手机号是多少？",
+      "expected_answer": "知识库中没有相关信息，无法回答。",
+      "answer_keywords": [],
+      "relevant_headings": [],
+      "relevant_chunk_ids": [],
+      "category": "no_answer"
+    },
+    {
+      "id": "q010",
+      "question": "出差怎么处理？",
+      "expected_answer": "问题过于宽泛，需要结合具体方面回答。",
+      "answer_keywords": [],
+      "relevant_headings": ["第二条 出差申请流程"],
+      "relevant_chunk_ids": [],
+      "category": "ambiguous"
+    }
+  ]
+}

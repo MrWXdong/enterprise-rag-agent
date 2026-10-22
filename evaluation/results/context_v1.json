@@ -1,0 +1,258 @@
+{
+  "dataset_version": "v1",
+  "strategy": "search_chunks_with_context",
+  "top_k": 5,
+  "neighbor_window": 1,
+  "max_chunks": 15,
+  "aggregate": {
+    "evaluated_item_count": 8,
+    "recall_at_k": 1.0,
+    "mrr": 0.875,
+    "ndcg_at_k": 0.9077324383928644
+  },
+  "items": [
+    {
+      "id": "q001",
+      "question": "一类城市普通员工住宿费每天最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "latency_ms": 25023.67,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q002",
+      "question": "二类城市部门负责人住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "latency_ms": 93.06,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q003",
+      "question": "三类城市普通员工住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "latency_ms": 89.73,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q004",
+      "question": "一类城市每天餐饮补贴是多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "latency_ms": 75.61,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q005",
+      "question": "出差结束后最晚多久提交报销？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000008",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000000"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "latency_ms": 93.21,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 0.5,
+      "ndcg_at_k": 0.6309297535714575
+    },
+    {
+      "id": "q006",
+      "question": "住宿标准和餐饮补贴分别是多少？",
+      "category": "cross_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000000",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "latency_ms": 94.34,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q007",
+      "question": "住宿费用超出标准时怎么处理？",
+      "category": "paraphrase",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000000",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "latency_ms": 71.34,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 0.5,
+      "ndcg_at_k": 0.6309297535714575
+    },
+    {
+      "id": "q008",
+      "question": "账号密码怎么设置？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000031",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000011",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000027"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
+      ],
+      "latency_ms": 77.81,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    {
+      "id": "q009",
+      "question": "公司董事长私人手机号是多少？",
+      "category": "no_answer",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000019",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000020",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000025",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000027",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000018",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000011"
+      ],
+      "relevant_chunk_ids": [],
+      "latency_ms": 92.99
+    },
+    {
+      "id": "q010",
+      "question": "出差怎么处理？",
+      "category": "ambiguous",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000008",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000000"
+      ],
+      "relevant_chunk_ids": [],
+      "latency_ms": 83.99
+    }
+  ]
+}
