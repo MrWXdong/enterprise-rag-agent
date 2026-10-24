@@ -1,14 +1,41 @@
 {
   "dataset_version": "v1",
   "strategy": "search_chunks_with_context",
-  "top_k": 5,
+  "retrieval_top_k": 5,
+  "metric_k": 5,
   "neighbor_window": 1,
   "max_chunks": 15,
   "aggregate": {
     "evaluated_item_count": 8,
     "recall_at_k": 1.0,
+    "precision_at_k": 0.225,
     "mrr": 0.875,
-    "ndcg_at_k": 0.9077324383928644
+    "ndcg_at_k": 0.9077324383928644,
+    "average_context_size": 11.2,
+    "average_latency_ms": 2587.4759999999997
+  },
+  "metrics_by_category": {
+    "cross_chunk": {
+      "item_count": 1,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.4,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0
+    },
+    "paraphrase": {
+      "item_count": 1,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg_at_k": 0.6309297535714575
+    },
+    "single_chunk": {
+      "item_count": 6,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.20000000000000004,
+      "mrr": 0.9166666666666666,
+      "ndcg_at_k": 0.9384882922619097
+    }
   },
   "items": [
     {
@@ -31,8 +58,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "latency_ms": 25023.67,
+      "context_size": 11,
+      "latency_ms": 25089.12,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -56,8 +85,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "latency_ms": 93.06,
+      "context_size": 11,
+      "latency_ms": 95.21,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -81,8 +112,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "latency_ms": 89.73,
+      "context_size": 11,
+      "latency_ms": 82.56,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -106,8 +139,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
-      "latency_ms": 75.61,
+      "context_size": 11,
+      "latency_ms": 100.23,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -129,8 +164,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
       ],
-      "latency_ms": 93.21,
+      "context_size": 9,
+      "latency_ms": 82.87,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 0.5,
       "ndcg_at_k": 0.6309297535714575
     },
@@ -157,8 +194,10 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
-      "latency_ms": 94.34,
+      "context_size": 13,
+      "latency_ms": 78.9,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.4,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -183,8 +222,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "latency_ms": 71.34,
+      "context_size": 12,
+      "latency_ms": 93.03,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 0.5,
       "ndcg_at_k": 0.6309297535714575
     },
@@ -207,8 +248,10 @@
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
       ],
-      "latency_ms": 77.81,
+      "context_size": 10,
+      "latency_ms": 83.27,
       "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0
     },
@@ -232,7 +275,8 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000011"
       ],
       "relevant_chunk_ids": [],
-      "latency_ms": 92.99
+      "context_size": 13,
+      "latency_ms": 92.78
     },
     {
       "id": "q010",
@@ -252,7 +296,8 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000000"
       ],
       "relevant_chunk_ids": [],
-      "latency_ms": 83.99
+      "context_size": 11,
+      "latency_ms": 76.79
     }
   ]
 }

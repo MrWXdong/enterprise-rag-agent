@@ -12,7 +12,7 @@
     "mrr": 0.875,
     "ndcg_at_k": 0.9077324383928644,
     "average_context_size": 5.0,
-    "average_latency_ms": 2553.6310000000003
+    "average_latency_ms": 2608.866
   },
   "metrics_by_category": {
     "cross_chunk": {
@@ -53,7 +53,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
       "context_size": 5,
-      "latency_ms": 24856.93,
+      "latency_ms": 25357.18,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
@@ -74,7 +74,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
       "context_size": 5,
-      "latency_ms": 56.0,
+      "latency_ms": 84.94,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
@@ -95,7 +95,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
       "context_size": 5,
-      "latency_ms": 81.8,
+      "latency_ms": 99.29,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
@@ -116,7 +116,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
       "context_size": 5,
-      "latency_ms": 96.9,
+      "latency_ms": 82.12,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
@@ -137,7 +137,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
       ],
       "context_size": 5,
-      "latency_ms": 55.02,
+      "latency_ms": 76.17,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 0.5,
@@ -159,7 +159,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
       "context_size": 5,
-      "latency_ms": 77.73,
+      "latency_ms": 76.72,
       "recall_at_k": 1.0,
       "precision_at_k": 0.4,
       "reciprocal_rank": 1.0,
@@ -180,7 +180,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
       "context_size": 5,
-      "latency_ms": 66.56,
+      "latency_ms": 76.54,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 0.5,
@@ -201,7 +201,7 @@
         "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
       ],
       "context_size": 5,
-      "latency_ms": 55.58,
+      "latency_ms": 75.11,
       "recall_at_k": 1.0,
       "precision_at_k": 0.2,
       "reciprocal_rank": 1.0,
@@ -220,7 +220,7 @@
       ],
       "relevant_chunk_ids": [],
       "context_size": 5,
-      "latency_ms": 96.49
+      "latency_ms": 80.37
     },
     {
       "id": "q010",
@@ -235,7 +235,7 @@
       ],
       "relevant_chunk_ids": [],
       "context_size": 5,
-      "latency_ms": 93.3
+      "latency_ms": 80.22
     }
   ]
 }
