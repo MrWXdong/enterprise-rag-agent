@@ -53,6 +53,8 @@ def chat(request: ChatRequest):
     retrieved_chunks = search_chunks_with_context(
         request.question,
         top_k=5,
+        neighbor_window=0,
+        max_chunks=5,
     )
 
     if not retrieved_chunks:

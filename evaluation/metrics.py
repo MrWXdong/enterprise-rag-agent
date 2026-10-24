@@ -2,7 +2,7 @@ import math
 
 
 def _validate_k(k: int) -> None:
-    """确保 K 是正整数。"""
+    """K 必须是正整数。"""
     if k <= 0:
         raise ValueError("k 必须大于0")
 
@@ -48,7 +48,7 @@ def reciprocal_rank(
     relevant_ids: list[str],
     k: int | None = None,
 ) -> float:
-    """返回第一个正确结果的倒数排名。"""
+    """返回第一个正确 chunk 的倒数排名。"""
     relevant_set = set(relevant_ids)
     if not relevant_set:
         return 0.0
@@ -89,5 +89,5 @@ def ndcg_at_k(
 
 
 def mean(values: list[float]) -> float:
-    """计算算术平均值，空列表返回 0。"""
+    """计算平均值，空列表返回 0。"""
     return sum(values) / len(values) if values else 0.0

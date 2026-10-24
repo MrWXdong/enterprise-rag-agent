@@ -3,6 +3,7 @@ import json
 import time
 from pathlib import Path
 
+from embedding_service import embed_text
 from pgvector_retriever import search_chunks_with_context
 
 from evaluation.metrics import (
@@ -19,7 +20,7 @@ RESULTS_DIR = PROJECT_DIR / "evaluation" / "results"
 
 
 def load_dataset(path: Path) -> dict:
-    """读取评测集 JSON。"""
+    """读取固定评测集。"""
     if not path.exists():
         raise FileNotFoundError(f"评测集不存在：{path}")
 
@@ -33,7 +34,11 @@ def evaluate_retrieval(
     neighbor_window: int = 1,
     max_chunks: int = 15,
 ) -> dict:
-    """评测当前 RAG 检索策略。"""
+    """运行检索评测，并汇总整体及分类指标。"""
+
+    # 预热 Embedding 模型，避免首次加载时间污染单题延迟。
+    embed_text("模型预热")
+
     item_results: list[dict] = []
     metric_rows: list[dict] = []
 
@@ -49,8 +54,8 @@ def evaluate_retrieval(
         )
         latency_ms = (time.perf_counter() - start_time) * 1000
 
-        # search_chunks_with_context 返回原文顺序，
-        # 评测检索排名时需要重新按相似度降序排列。
+        # 上下文扩展函数按原文顺序返回，
+        # 检索评测需要重新按相似度降序排列。
         ranked_chunks = sorted(
             chunks,
             key=lambda chunk: chunk["score"],
@@ -75,6 +80,10 @@ def evaluate_retrieval(
         }
 
         if should_evaluate:
+            # 完整上下文指标使用实际返回数量，
+            # 不固定为 metric_k，用于观察上下文扩展带来的噪声。
+            context_k = max(len(retrieved_ids), 1)
+
             item_result.update(
                 {
                     "recall_at_k": recall_at_k(
@@ -97,6 +106,16 @@ def evaluate_retrieval(
                         relevant_ids,
                         k=metric_k,
                     ),
+                    "context_recall": recall_at_k(
+                        retrieved_ids,
+                        relevant_ids,
+                        k=context_k,
+                    ),
+                    "context_precision": precision_at_k(
+                        retrieved_ids,
+                        relevant_ids,
+                        k=context_k,
+                    ),
                 }
             )
             metric_rows.append(item_result)
@@ -109,6 +128,8 @@ def evaluate_retrieval(
         "precision_at_k": mean([row["precision_at_k"] for row in metric_rows]),
         "mrr": mean([row["reciprocal_rank"] for row in metric_rows]),
         "ndcg_at_k": mean([row["ndcg_at_k"] for row in metric_rows]),
+        "context_recall": mean([row["context_recall"] for row in metric_rows]),
+        "context_precision": mean([row["context_precision"] for row in metric_rows]),
         "average_context_size": mean([row["context_size"] for row in item_results]),
         "average_latency_ms": mean([row["latency_ms"] for row in item_results]),
     }
@@ -118,12 +139,17 @@ def evaluate_retrieval(
 
     for category in category_names:
         category_rows = [row for row in metric_rows if row["category"] == category]
+
         metrics_by_category[category] = {
             "item_count": len(category_rows),
             "recall_at_k": mean([row["recall_at_k"] for row in category_rows]),
             "precision_at_k": mean([row["precision_at_k"] for row in category_rows]),
             "mrr": mean([row["reciprocal_rank"] for row in category_rows]),
             "ndcg_at_k": mean([row["ndcg_at_k"] for row in category_rows]),
+            "context_recall": mean([row["context_recall"] for row in category_rows]),
+            "context_precision": mean(
+                [row["context_precision"] for row in category_rows]
+            ),
         }
 
     return {
@@ -145,7 +171,7 @@ def build_output_path(
     neighbor_window: int,
     max_chunks: int,
 ) -> Path:
-    """根据实验参数生成结果文件名，避免不同实验互相覆盖。"""
+    """根据实验参数生成结果文件名。"""
     return RESULTS_DIR / (
         "context"
         f"_retrieval_top{retrieval_top_k}"
@@ -156,7 +182,7 @@ def build_output_path(
 
 
 def parse_args() -> argparse.Namespace:
-    """解析命令行参数。"""
+    """解析评测命令行参数。"""
     parser = argparse.ArgumentParser(
         description="Evaluate RAG retrieval metrics.",
     )
