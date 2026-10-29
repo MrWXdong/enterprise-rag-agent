@@ -4,7 +4,10 @@ import time
 from pathlib import Path
 
 from embedding_service import embed_text
-from pgvector_retriever import search_chunks_with_context
+from pgvector_retriever import (
+    search_chunks_dynamic,
+    search_chunks_with_context,
+)
 
 from evaluation.metrics import (
     mean,
@@ -29,14 +32,39 @@ def load_dataset(path: Path) -> dict:
 
 def evaluate_retrieval(
     dataset: dict,
+    retrieval_strategy: str = "fixed",
     retrieval_top_k: int = 5,
     metric_k: int = 5,
     neighbor_window: int = 1,
     max_chunks: int = 15,
+    candidate_k: int = 5,
+    max_k: int = 2,
+    min_score: float = 0.55,
+    min_relative_score: float = 0.85,
 ) -> dict:
     """运行检索评测，并汇总整体及分类指标。"""
 
-    # 预热 Embedding 模型，避免首次加载时间污染单题延迟。
+    if retrieval_strategy not in {"fixed", "dynamic"}:
+        raise ValueError("retrieval_strategy 必须是 fixed 或 dynamic")
+
+    if retrieval_strategy == "dynamic":
+        if candidate_k <= 0:
+            raise ValueError("candidate_k 必须大于0")
+        if max_k <= 0:
+            raise ValueError("max_k 必须大于0")
+        if not -1 <= min_score <= 1:
+            raise ValueError("min_score 必须在 -1 到 1 之间")
+        if not 0 <= min_relative_score <= 1:
+            raise ValueError("min_relative_score 必须在 0 到 1 之间")
+    else:
+        if retrieval_top_k <= 0:
+            raise ValueError("retrieval_top_k 必须大于0")
+        if neighbor_window < 0:
+            raise ValueError("neighbor_window 不能小于0")
+        if max_chunks <= 0:
+            raise ValueError("max_chunks 必须大于0")
+
+    # 预热模型，避免首次加载时间污染单题延迟。
     embed_text("模型预热")
 
     item_results: list[dict] = []
@@ -46,22 +74,36 @@ def evaluate_retrieval(
         query = item["question"]
 
         start_time = time.perf_counter()
-        chunks = search_chunks_with_context(
-            query,
-            top_k=retrieval_top_k,
-            neighbor_window=neighbor_window,
-            max_chunks=max_chunks,
-        )
+
+        if retrieval_strategy == "dynamic":
+            chunks = search_chunks_dynamic(
+                query,
+                candidate_k=candidate_k,
+                max_k=max_k,
+                min_score=min_score,
+                min_relative_score=min_relative_score,
+            )
+        else:
+            chunks = search_chunks_with_context(
+                query,
+                top_k=retrieval_top_k,
+                neighbor_window=neighbor_window,
+                max_chunks=max_chunks,
+            )
+
         latency_ms = (time.perf_counter() - start_time) * 1000
 
-        # 上下文扩展函数按原文顺序返回，
-        # 检索评测需要重新按相似度降序排列。
+        # 检索评测统一按相似度降序计算排名。
         ranked_chunks = sorted(
             chunks,
             key=lambda chunk: chunk["score"],
             reverse=True,
         )
+
         retrieved_ids = [chunk["chunk_id"] for chunk in ranked_chunks]
+        retrieved_scores = [round(float(chunk["score"]), 6) for chunk in ranked_chunks]
+        retrieved_chunk_indices = [chunk["chunk_index"] for chunk in ranked_chunks]
+        retrieved_headings = [chunk.get("heading") for chunk in ranked_chunks]
 
         relevant_ids = item.get("relevant_chunk_ids", [])
         category = item.get("category", "unknown")
@@ -74,14 +116,16 @@ def evaluate_retrieval(
             "question": query,
             "category": category,
             "retrieved_chunk_ids": retrieved_ids,
+            "retrieved_scores": retrieved_scores,
+            "retrieved_chunk_indices": retrieved_chunk_indices,
+            "retrieved_headings": retrieved_headings,
             "relevant_chunk_ids": relevant_ids,
             "context_size": len(retrieved_ids),
             "latency_ms": round(latency_ms, 2),
         }
 
         if should_evaluate:
-            # 完整上下文指标使用实际返回数量，
-            # 不固定为 metric_k，用于观察上下文扩展带来的噪声。
+            # 上下文指标使用实际返回数量，以观察动态 K 的噪声变化。
             context_k = max(len(retrieved_ids), 1)
 
             item_result.update(
@@ -118,6 +162,7 @@ def evaluate_retrieval(
                     ),
                 }
             )
+
             metric_rows.append(item_result)
 
         item_results.append(item_result)
@@ -154,8 +199,12 @@ def evaluate_retrieval(
 
     return {
         "dataset_version": dataset.get("version"),
-        "strategy": "search_chunks_with_context",
+        "strategy": retrieval_strategy,
         "retrieval_top_k": retrieval_top_k,
+        "candidate_k": candidate_k,
+        "max_k": max_k,
+        "min_score": min_score,
+        "min_relative_score": min_relative_score,
         "metric_k": metric_k,
         "neighbor_window": neighbor_window,
         "max_chunks": max_chunks,
@@ -166,12 +215,31 @@ def evaluate_retrieval(
 
 
 def build_output_path(
+    retrieval_strategy: str,
     retrieval_top_k: int,
     metric_k: int,
     neighbor_window: int,
     max_chunks: int,
+    candidate_k: int,
+    max_k: int,
+    min_score: float,
+    min_relative_score: float,
 ) -> Path:
-    """根据实验参数生成结果文件名。"""
+    """根据实验参数生成独立结果文件名。"""
+
+    if retrieval_strategy == "dynamic":
+        score_name = f"{min_score:.2f}".replace(".", "")
+        relative_name = f"{min_relative_score:.2f}".replace(".", "")
+
+        return RESULTS_DIR / (
+            "dynamic"
+            f"_candidate{candidate_k}"
+            f"_max{max_k}"
+            f"_score{score_name}"
+            f"_relative{relative_name}"
+            f"_metric{metric_k}.json"
+        )
+
     return RESULTS_DIR / (
         "context"
         f"_retrieval_top{retrieval_top_k}"
@@ -190,6 +258,11 @@ def parse_args() -> argparse.Namespace:
         "--dataset",
         type=Path,
         default=DEFAULT_DATASET_PATH,
+    )
+    parser.add_argument(
+        "--retrieval-strategy",
+        choices=["fixed", "dynamic"],
+        default="fixed",
     )
     parser.add_argument(
         "--retrieval-top-k",
@@ -211,6 +284,26 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=15,
     )
+    parser.add_argument(
+        "--candidate-k",
+        type=int,
+        default=5,
+    )
+    parser.add_argument(
+        "--max-k",
+        type=int,
+        default=2,
+    )
+    parser.add_argument(
+        "--min-score",
+        type=float,
+        default=0.55,
+    )
+    parser.add_argument(
+        "--min-relative-score",
+        type=float,
+        default=0.85,
+    )
 
     return parser.parse_args()
 
@@ -221,19 +314,31 @@ def main() -> None:
 
     results = evaluate_retrieval(
         dataset,
+        retrieval_strategy=args.retrieval_strategy,
         retrieval_top_k=args.retrieval_top_k,
         metric_k=args.metric_k,
         neighbor_window=args.neighbor_window,
         max_chunks=args.max_chunks,
+        candidate_k=args.candidate_k,
+        max_k=args.max_k,
+        min_score=args.min_score,
+        min_relative_score=args.min_relative_score,
     )
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
     output_path = build_output_path(
+        args.retrieval_strategy,
         args.retrieval_top_k,
         args.metric_k,
         args.neighbor_window,
         args.max_chunks,
+        args.candidate_k,
+        args.max_k,
+        args.min_score,
+        args.min_relative_score,
     )
+
     output_path.write_text(
         json.dumps(results, ensure_ascii=False, indent=2),
         encoding="utf-8",

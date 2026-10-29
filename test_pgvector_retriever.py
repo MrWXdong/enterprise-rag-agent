@@ -1,3 +1,4 @@
+import pytest
 from pgvector import Vector
 
 from config import settings
@@ -319,3 +320,78 @@ class TestSearchChunksWithContext:
             assert False, "neighbor_window=-1 应该抛出 ValueError"
         except ValueError:
             pass
+
+
+class TestSearchChunksDynamic:
+    def test_candidate_k_and_dynamic_selection(self, monkeypatch):
+        captured = {}
+
+        def fake_search_chunks(query, top_k):
+            captured["query"] = query
+            captured["top_k"] = top_k
+            return [
+                {
+                    "chunk_id": "chunk-a",
+                    "score": 0.90,
+                },
+                {
+                    "chunk_id": "chunk-b",
+                    "score": 0.82,
+                },
+                {
+                    "chunk_id": "chunk-c",
+                    "score": 0.50,
+                },
+            ]
+
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "search_chunks",
+            fake_search_chunks,
+        )
+
+        result = pgvector_retriever.search_chunks_dynamic(
+            "测试问题",
+            candidate_k=5,
+            max_k=2,
+            min_score=0.55,
+            min_relative_score=0.85,
+        )
+
+        assert captured == {
+            "query": "测试问题",
+            "top_k": 5,
+        }
+        assert [chunk["chunk_id"] for chunk in result] == [
+            "chunk-a",
+            "chunk-b",
+        ]
+
+    def test_all_low_scores_returns_empty_list(self, monkeypatch):
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "search_chunks",
+            lambda query, top_k: [
+                {
+                    "chunk_id": "chunk-a",
+                    "score": 0.20,
+                }
+            ],
+        )
+
+        result = pgvector_retriever.search_chunks_dynamic(
+            "知识库外问题",
+            candidate_k=5,
+            max_k=2,
+            min_score=0.55,
+            min_relative_score=0.85,
+        )
+
+        assert result == []
+
+    def test_invalid_candidate_k_raises_error(self):
+        with pytest.raises(ValueError):
+            pgvector_retriever.search_chunks_dynamic(
+                "测试问题",
+                candidate_k=0,
+            )

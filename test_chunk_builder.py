@@ -192,7 +192,7 @@ class TestBuildStructureSentenceChunks:
         chunks = build_structure_sentence_chunks(
             "doc-1",
             text,
-            chunk_size=50,
+            chunk_size=20,
             overlap=5,
         )
 

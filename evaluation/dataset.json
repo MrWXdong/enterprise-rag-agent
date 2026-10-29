@@ -1,6 +1,6 @@
 {
   "document_id": "a4ea312ba60f462294dc1244952e2c44",
-  "version": "v1",
+  "version": "v2",
   "document_name": "chunk_test_document.txt",
   "items": [
     {
@@ -62,8 +62,8 @@
       "question": "住宿费用超出标准时怎么处理？",
       "expected_answer": "超出标准的部分原则上由员工自行承担。",
       "answer_keywords": ["超出标准", "自行承担"],
-      "relevant_headings": ["第四条 住宿费用标准"],
-      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004"],
+      "relevant_headings": ["第四条 住宿费用标准","问题七：住宿费超过标准怎么办？"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004","a4ea312ba60f462294dc1244952e2c44_chunk_000029"],
       "category": "paraphrase"
     },
     {

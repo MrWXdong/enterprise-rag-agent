@@ -2,6 +2,7 @@ from pgvector import Vector
 from config import settings
 from database import get_connection
 from embedding_service import embed_text, embed_texts
+from retrieval_policy import select_dynamic_top_k
 
 
 def store_chunks(chunks: list[dict]) -> int:
@@ -213,4 +214,28 @@ def search_chunks_with_context(
             item["document_id"],
             item["chunk_index"],
         ),
+    )
+
+
+def search_chunks_dynamic(
+    query: str,
+    candidate_k: int = 5,
+    max_k: int = 2,
+    min_score: float = 0.55,
+    min_relative_score: float = 0.85,
+) -> list[dict]:
+    """先召回candidate_k个候选，再动态选择最终证据。"""
+
+    if candidate_k <= 0:
+        raise ValueError("candidate_k 必须大于0")
+    candidates = search_chunks(
+        query,
+        top_k=candidate_k,
+    )
+
+    return select_dynamic_top_k(
+        candidates,
+        max_k=max_k,
+        min_score=min_score,
+        min_relative_score=min_relative_score,
     )

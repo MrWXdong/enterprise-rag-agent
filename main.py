@@ -5,7 +5,10 @@ from openai import OpenAI
 from config import settings
 from pathlib import Path
 from document_parser import parse_document
-from pgvector_retriever import store_chunks, search_chunks_with_context
+from pgvector_retriever import (
+    store_chunks,
+    search_chunks_dynamic,
+)
 from chunk_builder import build_structure_sentence_chunks
 from prompt_builder import (
     RAG_SYSTEM_PROMPT,
@@ -50,13 +53,13 @@ def chat(request: ChatRequest):
     if not settings.llm_api_key:
         return {"answer": "请先在.env文件中配置LLM_API_KEY"}
 
-    retrieved_chunks = search_chunks_with_context(
+    retrieved_chunks = search_chunks_dynamic(
         request.question,
-        top_k=5,
-        neighbor_window=0,
-        max_chunks=5,
+        candidate_k=settings.retrieval_candidate_k,
+        max_k=settings.retrieval_max_k,
+        min_score=settings.retrieval_min_score,
+        min_relative_score=settings.retrieval_min_relative_score,
     )
-
     if not retrieved_chunks:
         return {
             "answer": "知识库中没有足够依据回答该问题。",

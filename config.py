@@ -18,5 +18,14 @@ class Settings(BaseSettings):
 
     database_url: str = ""
 
+    retrieval_top_k: int = 2
+    retrieval_neighbor_window: int = 0
+    retrieval_max_chunks: int = 2
+
+    retrieval_candidate_k: int = 5
+    retrieval_max_k: int = 2
+    retrieval_min_score: float = 0.55
+    retrieval_min_relative_score: float = 0.85
+
 
 settings = Settings()

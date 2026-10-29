@@ -1,0 +1,336 @@
+{
+  "dataset_version": "v2",
+  "strategy": "dynamic",
+  "retrieval_top_k": 5,
+  "candidate_k": 5,
+  "max_k": 2,
+  "min_score": 0.55,
+  "min_relative_score": 0.85,
+  "metric_k": 5,
+  "neighbor_window": 1,
+  "max_chunks": 15,
+  "aggregate": {
+    "evaluated_item_count": 8,
+    "recall_at_k": 1.0,
+    "precision_at_k": 0.8125,
+    "mrr": 0.9375,
+    "ndcg_at_k": 0.9538662191964322,
+    "context_recall": 1.0,
+    "context_precision": 0.8125,
+    "average_context_size": 1.5,
+    "average_latency_ms": 38.714
+  },
+  "metrics_by_category": {
+    "cross_chunk": {
+      "item_count": 1,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    "paraphrase": {
+      "item_count": 1,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    "single_chunk": {
+      "item_count": 6,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.75,
+      "mrr": 0.9166666666666666,
+      "ndcg_at_k": 0.9384882922619097,
+      "context_recall": 1.0,
+      "context_precision": 0.75
+    }
+  },
+  "items": [
+    {
+      "id": "q001",
+      "question": "一类城市普通员工住宿费每天最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "retrieved_scores": [
+        0.731473,
+        0.652096
+      ],
+      "retrieved_chunk_indices": [
+        4,
+        5
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准",
+        "第五条 餐饮补贴"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 2,
+      "latency_ms": 38.86,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q002",
+      "question": "二类城市部门负责人住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
+      "retrieved_scores": [
+        0.709844,
+        0.611167
+      ],
+      "retrieved_chunk_indices": [
+        4,
+        29
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准",
+        "问题七：住宿费超过标准怎么办？"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 2,
+      "latency_ms": 52.29,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q003",
+      "question": "三类城市普通员工住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.765251
+      ],
+      "retrieved_chunk_indices": [
+        4
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 1,
+      "latency_ms": 30.72,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q004",
+      "question": "一类城市每天餐饮补贴是多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "retrieved_scores": [
+        0.815306
+      ],
+      "retrieved_chunk_indices": [
+        5
+      ],
+      "retrieved_headings": [
+        "第五条 餐饮补贴"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "context_size": 1,
+      "latency_ms": 29.25,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q005",
+      "question": "出差结束后最晚多久提交报销？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "retrieved_scores": [
+        0.685316,
+        0.67767
+      ],
+      "retrieved_chunk_indices": [
+        2,
+        6
+      ],
+      "retrieved_headings": [
+        "第二条 出差申请流程",
+        "第六条 费用报销要求"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "context_size": 2,
+      "latency_ms": 46.71,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 0.5,
+      "ndcg_at_k": 0.6309297535714575,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q006",
+      "question": "住宿标准和餐饮补贴分别是多少？",
+      "category": "cross_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.700193,
+        0.6761
+      ],
+      "retrieved_chunk_indices": [
+        5,
+        4
+      ],
+      "retrieved_headings": [
+        "第五条 餐饮补贴",
+        "第四条 住宿费用标准"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "context_size": 2,
+      "latency_ms": 29.4,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q007",
+      "question": "住宿费用超出标准时怎么处理？",
+      "category": "paraphrase",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.846094,
+        0.732605
+      ],
+      "retrieved_chunk_indices": [
+        29,
+        4
+      ],
+      "retrieved_headings": [
+        "问题七：住宿费超过标准怎么办？",
+        "第四条 住宿费用标准"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
+      "context_size": 2,
+      "latency_ms": 48.35,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q008",
+      "question": "账号密码怎么设置？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
+      ],
+      "retrieved_scores": [
+        0.685048
+      ],
+      "retrieved_chunk_indices": [
+        12
+      ],
+      "retrieved_headings": [
+        "第十二条 账号与密码"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
+      ],
+      "context_size": 1,
+      "latency_ms": 46.3,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q009",
+      "question": "公司董事长私人手机号是多少？",
+      "category": "no_answer",
+      "retrieved_chunk_ids": [],
+      "retrieved_scores": [],
+      "retrieved_chunk_indices": [],
+      "retrieved_headings": [],
+      "relevant_chunk_ids": [],
+      "context_size": 0,
+      "latency_ms": 33.42
+    },
+    {
+      "id": "q010",
+      "question": "出差怎么处理？",
+      "category": "ambiguous",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023"
+      ],
+      "retrieved_scores": [
+        0.709966,
+        0.627274
+      ],
+      "retrieved_chunk_indices": [
+        2,
+        23
+      ],
+      "retrieved_headings": [
+        "第二条 出差申请流程",
+        "问题一：员工可以自行调整出差城市分类吗？"
+      ],
+      "relevant_chunk_ids": [],
+      "context_size": 2,
+      "latency_ms": 31.84
+    }
+  ]
+}

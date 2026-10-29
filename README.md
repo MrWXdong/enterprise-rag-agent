@@ -31,6 +31,8 @@
 - DeepSeek RAG 问答和来源返回
 - Pytest 自动化测试
 - Recall@K、Precision@K、MRR、nDCG@K 评测基础设施
+- 动态Top-K 候选过滤和上下文数量控制
+- 低分证据可信拒答
 
 ## 系统架构
 
@@ -98,10 +100,15 @@ next_chunk_id
 
 基础检索只返回相似度最高的种子 Chunk。系统可以继续查询同文档中的前后 Chunk，并按照 `chunk_id` 去重，减少因切分造成的上下文缺失。
 
+### 动态Top-K
+
+系统先召回`candidate_k`个候选，然后根据当前问题的分数分布选择最终证据。
+
 ## 项目结构
 
 ```text
 enterprise_rag_agent/
+├── retrieval_policy.py      # 动态Top-K证据筛选策略
 ├── main.py                    # FastAPI 接口
 ├── config.py                  # 环境配置
 ├── database.py                # PostgreSQL/PgVector 表结构
@@ -232,24 +239,27 @@ pytest -q
 
 ## 检索评测
 
-运行关联上下文检索方案：
+运行固定基线检索方案：
 
 ```powershell
 python -m evaluation.runner `
-  --retrieval-top-k 5 `
-  --metric-k 5 `
-  --neighbor-window 1 `
-  --max-chunks 15
+  --retrieval-strategy fixed `
+  --retrieval-top-k 2 `
+  --neighbor-window 0 `
+  --max-chunks 2 `
+  --metric-k 5
 ```
 
-运行基础检索方案：
+运行动态策略检索方案：
 
 ```powershell
 python -m evaluation.runner `
-  --retrieval-top-k 5 `
-  --metric-k 5 `
-  --neighbor-window 0 `
-  --max-chunks 5
+  --retrieval-strategy dynamic `
+  --candidate-k 5 `
+  --max-k 2 `
+  --min-score 0.55 `
+  --min-relative-score 0.85 `
+  --metric-k 5
 ```
 
 评测结果保存在：
@@ -260,13 +270,23 @@ evaluation/results/
 
 当前评测集仍处于扩充阶段。后续会使用固定问题集对比不同切分、混合检索和 Rerank 方案。
 
+### v2 检索评测
+
+| 策略 | Recall@5 | Precision@5 | MRR | nDCG@5 | 平均上下文数 |
+|---|---:|---:|---:|---:|---:|
+| 固定 K=2 | 1.0000 | 0.6250 | 0.9375 | 0.9539 | 2.0 |
+| 动态 Top-K | 1.0000 | 0.8125 | 0.9375 | 0.9539 | 1.5 |
+
+动态策略保持 Recall 和排序质量不变，将 Precision 从 `0.625` 提升到 `0.8125`，平均上下文数量从 `2.0` 降至 `1.5`。该结果来自当前较小评测集，不代表生产环境通用结论。
+
 ## 后续路线
 
 - [ ] 扩充检索评测集和测试文档
 - [ ] 接入 BM25 稀疏检索
 - [ ] 实现 BM25 + 向量混合召回
 - [ ] 接入 Rerank 精排
-- [ ] 增加动态 Top-K 和上下文预算
+- [x] 增加动态 Top-K 证据数量控制
+- [ ] 增加 Prompt Token 预算和动态截断
 - [ ] 增加证据充分性判断和可信拒答
 - [ ] 增加 PDF 与 DOCX 解析
 - [ ] 使用 LangGraph 实现 Agent 工具编排
@@ -282,6 +302,9 @@ evaluation/results/
 - 尚未接入 BM25、Rerank 和 LangGraph Agent
 - 评测集规模仍较小，当前指标不作为最终求职数据
 - 文件本地存储尚未替换为对象存储
+- 动态 Top-K 阈值基于当前 10 道题的 v2 评测集，仍需扩充数据后重新校准
+- 动态 Top-K 不能处理错误候选排第一的问题，后续需要 Rerank
+- 宽泛问题仍可能召回证据，需要增加歧义识别和证据充分性判断
 
 ## 安全说明
 
