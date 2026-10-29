@@ -1,48 +1,48 @@
 {
   "dataset_version": "v1",
   "strategy": "search_chunks_with_context",
-  "retrieval_top_k": 5,
-  "metric_k": 5,
+  "retrieval_top_k": 3,
+  "metric_k": 3,
   "neighbor_window": 0,
-  "max_chunks": 5,
+  "max_chunks": 3,
   "aggregate": {
     "evaluated_item_count": 8,
     "recall_at_k": 1.0,
-    "precision_at_k": 0.225,
+    "precision_at_k": 0.375,
     "mrr": 0.875,
     "ndcg_at_k": 0.9077324383928644,
     "context_recall": 1.0,
-    "context_precision": 0.225,
-    "average_context_size": 5.0,
-    "average_latency_ms": 99.81800000000001
+    "context_precision": 0.375,
+    "average_context_size": 3.0,
+    "average_latency_ms": 94.29100000000001
   },
   "metrics_by_category": {
     "cross_chunk": {
       "item_count": 1,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.4,
+      "precision_at_k": 0.6666666666666666,
       "mrr": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.4
+      "context_precision": 0.6666666666666666
     },
     "paraphrase": {
       "item_count": 1,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "mrr": 0.5,
       "ndcg_at_k": 0.6309297535714575,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     "single_chunk": {
       "item_count": 6,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.20000000000000004,
+      "precision_at_k": 0.3333333333333333,
       "mrr": 0.9166666666666666,
       "ndcg_at_k": 0.9384882922619097,
       "context_recall": 1.0,
-      "context_precision": 0.20000000000000004
+      "context_precision": 0.3333333333333333
     }
   },
   "items": [
@@ -53,21 +53,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "context_size": 5,
-      "latency_ms": 180.93,
+      "context_size": 3,
+      "latency_ms": 92.44,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q002",
@@ -76,21 +74,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "context_size": 5,
-      "latency_ms": 98.36,
+      "context_size": 3,
+      "latency_ms": 92.54,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q003",
@@ -99,21 +95,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "context_size": 5,
-      "latency_ms": 85.3,
+      "context_size": 3,
+      "latency_ms": 98.83,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q004",
@@ -122,21 +116,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
-      "context_size": 5,
-      "latency_ms": 93.58,
+      "context_size": 3,
+      "latency_ms": 98.04,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q005",
@@ -145,21 +137,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
       ],
-      "context_size": 5,
-      "latency_ms": 97.36,
+      "context_size": 3,
+      "latency_ms": 112.89,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 0.5,
       "ndcg_at_k": 0.6309297535714575,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q006",
@@ -168,22 +158,20 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000001"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
       ],
-      "context_size": 5,
-      "latency_ms": 84.85,
+      "context_size": 3,
+      "latency_ms": 95.11,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.4,
+      "precision_at_k": 0.6666666666666666,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.4
+      "context_precision": 0.6666666666666666
     },
     {
       "id": "q007",
@@ -192,21 +180,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000001"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
       ],
-      "context_size": 5,
-      "latency_ms": 94.75,
+      "context_size": 3,
+      "latency_ms": 79.17,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 0.5,
       "ndcg_at_k": 0.6309297535714575,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q008",
@@ -215,21 +201,19 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000032"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013"
       ],
       "relevant_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
       ],
-      "context_size": 5,
-      "latency_ms": 94.7,
+      "context_size": 3,
+      "latency_ms": 94.43,
       "recall_at_k": 1.0,
-      "precision_at_k": 0.2,
+      "precision_at_k": 0.3333333333333333,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
       "context_recall": 1.0,
-      "context_precision": 0.2
+      "context_precision": 0.3333333333333333
     },
     {
       "id": "q009",
@@ -238,13 +222,11 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000019"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026"
       ],
       "relevant_chunk_ids": [],
-      "context_size": 5,
-      "latency_ms": 91.17
+      "context_size": 3,
+      "latency_ms": 83.65
     },
     {
       "id": "q010",
@@ -253,13 +235,11 @@
       "retrieved_chunk_ids": [
         "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
         "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
-        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001"
       ],
       "relevant_chunk_ids": [],
-      "context_size": 5,
-      "latency_ms": 77.18
+      "context_size": 3,
+      "latency_ms": 95.81
     }
   ]
 }

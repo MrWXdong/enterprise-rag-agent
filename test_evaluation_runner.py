@@ -140,6 +140,7 @@ class TestEvaluateRetrieval:
 
     def test_dynamic_output_path_does_not_overwrite_fixed_result(self):
         output_path = runner.build_output_path(
+            dataset_version="test-v1",
             retrieval_strategy="dynamic",
             retrieval_top_k=5,
             metric_k=2,
@@ -152,5 +153,24 @@ class TestEvaluateRetrieval:
         )
 
         assert output_path.name == (
-            "dynamic_candidate7_max3_score060_relative080_metric2.json"
+            "dynamic_dataset-test-v1"
+            "_candidate7_max3_score060_relative080_metric2.json"
+        )
+
+    def test_fixed_output_path_contains_dataset_version(self):
+        output_path = runner.build_output_path(
+            dataset_version="v3",
+            retrieval_strategy="fixed",
+            retrieval_top_k=2,
+            metric_k=5,
+            neighbor_window=0,
+            max_chunks=2,
+            candidate_k=5,
+            max_k=2,
+            min_score=0.55,
+            min_relative_score=0.85,
+        )
+
+        assert output_path.name == (
+            "context_dataset-v3_retrieval_top2_metric5_window0_max2.json"
         )

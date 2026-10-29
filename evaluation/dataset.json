@@ -1,6 +1,6 @@
 {
   "document_id": "a4ea312ba60f462294dc1244952e2c44",
-  "version": "v2",
+  "version": "v3",
   "document_name": "chunk_test_document.txt",
   "items": [
     {
@@ -54,7 +54,10 @@
       "expected_answer": "住宿按一二三类城市不同标准执行，餐饮补贴也按城市分类。",
       "answer_keywords": ["600元", "450元", "350元", "120元", "100元", "80元"],
       "relevant_headings": ["第四条 住宿费用标准", "第五条 餐饮补贴"],
-      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004","a4ea312ba60f462294dc1244952e2c44_chunk_000005"],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
       "category": "cross_chunk"
     },
     {
@@ -62,8 +65,14 @@
       "question": "住宿费用超出标准时怎么处理？",
       "expected_answer": "超出标准的部分原则上由员工自行承担。",
       "answer_keywords": ["超出标准", "自行承担"],
-      "relevant_headings": ["第四条 住宿费用标准","问题七：住宿费超过标准怎么办？"],
-      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000004","a4ea312ba60f462294dc1244952e2c44_chunk_000029"],
+      "relevant_headings": [
+        "第四条 住宿费用标准",
+        "问题七：住宿费超过标准怎么办？"
+      ],
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
       "category": "paraphrase"
     },
     {
@@ -92,6 +101,60 @@
       "relevant_headings": ["第二条 出差申请流程"],
       "relevant_chunk_ids": [],
       "category": "ambiguous"
+    },
+    {
+      "id": "q011",
+      "question": "员工计划出差通常需要提前几个工作日提交申请？",
+      "expected_answer": "三个工作日。",
+      "answer_keywords": ["三个工作日"],
+      "relevant_headings": ["第二条 出差申请流程"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000002"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q012",
+      "question": "普通员工出差乘坐高铁原则上应选择什么座位？",
+      "expected_answer": "普通员工原则上选择二等座。",
+      "answer_keywords": ["二等座"],
+      "relevant_headings": ["第三条 交通工具标准"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000003"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q013",
+      "question": "电子发票报销时可以使用截图代替原始文件吗？",
+      "expected_answer": "不可以。电子发票需要上传原始 PDF 或 OFD 文件，截图只能作为辅助材料。",
+      "answer_keywords": ["不可以", "PDF", "OFD"],
+      "relevant_headings": ["第六条 费用报销要求"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000006"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q014",
+      "question": "员工与供应商存在亲属关系时应如何处理？",
+      "expected_answer": "员工应主动申报可能构成利益冲突的情况。",
+      "answer_keywords": ["主动申报", "利益冲突"],
+      "relevant_headings": ["第九条 供应商选择"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000009"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q015",
+      "question": "生产数据库备份文件至少需要保留多少天？",
+      "expected_answer": "备份文件至少保留三十天。",
+      "answer_keywords": ["三十天"],
+      "relevant_headings": ["第十五条 数据备份"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000015"],
+      "category": "single_chunk"
+    },
+    {
+      "id": "q016",
+      "question": "紧急客户工单的响应时间是多少？",
+      "expected_answer": "紧急问题响应时间为十五分钟。",
+      "answer_keywords": ["十五分钟"],
+      "relevant_headings": ["第十六条 工单分级"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000016"],
+      "category": "single_chunk"
     }
   ]
 }

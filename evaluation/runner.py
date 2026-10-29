@@ -215,6 +215,7 @@ def evaluate_retrieval(
 
 
 def build_output_path(
+    dataset_version: str,
     retrieval_strategy: str,
     retrieval_top_k: int,
     metric_k: int,
@@ -225,14 +226,16 @@ def build_output_path(
     min_score: float,
     min_relative_score: float,
 ) -> Path:
-    """根据实验参数生成独立结果文件名。"""
+    """根据数据集和实验参数生成独立结果文件名。"""
+
+    version_name = str(dataset_version).replace(" ", "_")
 
     if retrieval_strategy == "dynamic":
         score_name = f"{min_score:.2f}".replace(".", "")
         relative_name = f"{min_relative_score:.2f}".replace(".", "")
 
         return RESULTS_DIR / (
-            "dynamic"
+            f"dynamic_dataset-{version_name}"
             f"_candidate{candidate_k}"
             f"_max{max_k}"
             f"_score{score_name}"
@@ -241,7 +244,7 @@ def build_output_path(
         )
 
     return RESULTS_DIR / (
-        "context"
+        f"context_dataset-{version_name}"
         f"_retrieval_top{retrieval_top_k}"
         f"_metric{metric_k}"
         f"_window{neighbor_window}"
@@ -328,6 +331,7 @@ def main() -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     output_path = build_output_path(
+        dataset.get("version", "unknown"),
         args.retrieval_strategy,
         args.retrieval_top_k,
         args.metric_k,
