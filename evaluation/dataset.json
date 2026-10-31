@@ -1,6 +1,6 @@
 {
   "document_id": "a4ea312ba60f462294dc1244952e2c44",
-  "version": "v3",
+  "version": "v4",
   "document_name": "chunk_test_document.txt",
   "items": [
     {
@@ -155,6 +155,60 @@
       "relevant_headings": ["第十六条 工单分级"],
       "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000016"],
       "category": "single_chunk"
+    },
+    {
+      "id": "q017",
+      "question": "代码上线前需要完成哪些测试、备份和发布保障？",
+      "expected_answer": "至少完成代码审查、自动化测试、安全扫描、功能测试、安全测试、数据备份、回滚方案和上线监控。",
+      "answer_keywords": ["代码审查", "自动化测试", "安全扫描", "数据备份", "回滚方案", "监控"],
+      "relevant_headings": ["第十七条 项目交付", "问题十：代码上线前必须具备什么条件？"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000017", "a4ea312ba60f462294dc1244952e2c44_chunk_000032"],
+      "category": "cross_chunk"
+    },
+    {
+      "id": "q018",
+      "question": "员工离职时需要交接哪些内容，离职后能否保留公司文档？",
+      "expected_answer": "应交接项目状态、代码、文档、账号、密钥和客户沟通记录；离职后不得保留任何未公开公司资料。",
+      "answer_keywords": ["项目状态", "代码仓库", "文档", "账号", "密钥", "不得保留"],
+      "relevant_headings": ["第二十二条 离职交接", "问题六：员工离职后能否保留公司文档？"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000022", "a4ea312ba60f462294dc1244952e2c44_chunk_000028"],
+      "category": "cross_chunk"
+    },
+    {
+      "id": "q019",
+      "question": "项目执行过程中客户提出新增需求，团队应先做什么？",
+      "expected_answer": "进行需求影响分析，评估工期、成本、质量和资源影响。",
+      "answer_keywords": ["影响分析", "工期", "成本", "质量", "资源"],
+      "relevant_headings": ["第十七条 项目交付"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000017"],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q020",
+      "question": "员工出差期间因病无法继续工作，应如何处理？",
+      "expected_answer": "及时联系直属主管和人力资源部门；医疗费用按医保和个人保险规则处理，不通过普通差旅报销。",
+      "answer_keywords": ["直属主管", "人力资源部门", "医保", "个人保险"],
+      "relevant_headings": ["第七条 特殊情况"],
+      "relevant_chunk_ids": ["a4ea312ba60f462294dc1244952e2c44_chunk_000007"],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q021",
+      "question": "公司去年实现多少营业收入？",
+      "expected_answer": "知识库中没有相关信息，无法回答。",
+      "answer_keywords": [],
+      "relevant_headings": [],
+      "relevant_chunk_ids": [],
+      "category": "no_answer"
+    },
+    {
+      "id": "q022",
+      "question": "公司的安全要求是什么？",
+      "expected_answer": "问题过于宽泛，需要明确是账号、数据、终端、备份还是上线安全。",
+      "answer_keywords": [],
+      "relevant_headings": [],
+      "relevant_chunk_ids": [],
+      "category": "ambiguous"
     }
   ]
 }
