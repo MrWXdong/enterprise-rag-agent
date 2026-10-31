@@ -5,6 +5,7 @@ from pathlib import Path
 
 from embedding_service import embed_text
 from pgvector_retriever import (
+    search_chunks,
     search_chunks_dynamic,
     search_chunks_with_context,
 )
@@ -73,6 +74,26 @@ def evaluate_retrieval(
     for item in dataset["items"]:
         query = item["question"]
 
+        candidate_start_time = time.perf_counter()
+        candidate_chunks = sorted(
+            search_chunks(
+                query,
+                top_k=candidate_k,
+            ),
+            key=lambda chunk: chunk["score"],
+            reverse=True,
+        )
+        candidate_latency_ms = (
+            time.perf_counter() - candidate_start_time
+        ) * 1000
+        candidate_ids = [
+            chunk["chunk_id"] for chunk in candidate_chunks
+        ]
+        candidate_scores = [
+            round(float(chunk["score"]), 6)
+            for chunk in candidate_chunks
+        ]
+
         start_time = time.perf_counter()
 
         if retrieval_strategy == "dynamic":
@@ -107,6 +128,12 @@ def evaluate_retrieval(
 
         relevant_ids = item.get("relevant_chunk_ids", [])
         category = item.get("category", "unknown")
+        candidate_recall = None
+        if relevant_ids:
+            candidate_hits = len(
+                set(candidate_ids) & set(relevant_ids)
+            )
+            candidate_recall = candidate_hits / len(relevant_ids)
         should_evaluate = category not in {"no_answer", "ambiguous"} and bool(
             relevant_ids
         )
@@ -119,9 +146,13 @@ def evaluate_retrieval(
             "retrieved_scores": retrieved_scores,
             "retrieved_chunk_indices": retrieved_chunk_indices,
             "retrieved_headings": retrieved_headings,
+            "candidate_chunk_ids": candidate_ids,
+            "candidate_scores": candidate_scores,
+            "candidate_recall": candidate_recall,
             "relevant_chunk_ids": relevant_ids,
             "context_size": len(retrieved_ids),
             "latency_ms": round(latency_ms, 2),
+            "candidate_latency_ms": round(candidate_latency_ms, 2),
         }
 
         if should_evaluate:
@@ -130,6 +161,11 @@ def evaluate_retrieval(
 
             item_result.update(
                 {
+                    "final_evidence_recall": recall_at_k(
+                        retrieved_ids,
+                        relevant_ids,
+                        k=metric_k,
+                    ),
                     "recall_at_k": recall_at_k(
                         retrieved_ids,
                         relevant_ids,
@@ -169,6 +205,12 @@ def evaluate_retrieval(
 
     aggregate = {
         "evaluated_item_count": len(metric_rows),
+        "candidate_recall": mean(
+            [row["candidate_recall"] for row in metric_rows]
+        ),
+        "final_evidence_recall": mean(
+            [row["final_evidence_recall"] for row in metric_rows]
+        ),
         "recall_at_k": mean([row["recall_at_k"] for row in metric_rows]),
         "precision_at_k": mean([row["precision_at_k"] for row in metric_rows]),
         "mrr": mean([row["reciprocal_rank"] for row in metric_rows]),
@@ -177,6 +219,9 @@ def evaluate_retrieval(
         "context_precision": mean([row["context_precision"] for row in metric_rows]),
         "average_context_size": mean([row["context_size"] for row in item_results]),
         "average_latency_ms": mean([row["latency_ms"] for row in item_results]),
+        "average_candidate_latency_ms": mean(
+            [row["candidate_latency_ms"] for row in item_results]
+        ),
     }
 
     category_names = sorted({row["category"] for row in metric_rows})
@@ -187,6 +232,12 @@ def evaluate_retrieval(
 
         metrics_by_category[category] = {
             "item_count": len(category_rows),
+            "candidate_recall": mean(
+                [row["candidate_recall"] for row in category_rows]
+            ),
+            "final_evidence_recall": mean(
+                [row["final_evidence_recall"] for row in category_rows]
+            ),
             "recall_at_k": mean([row["recall_at_k"] for row in category_rows]),
             "precision_at_k": mean([row["precision_at_k"] for row in category_rows]),
             "mrr": mean([row["reciprocal_rank"] for row in category_rows]),

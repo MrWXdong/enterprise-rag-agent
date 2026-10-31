@@ -17,17 +17,21 @@ def make_dataset():
     }
 
 
-def make_chunk():
+def make_chunk(
+    chunk_id="gold-chunk",
+    content="测试答案",
+    score=0.90,
+):
     return {
-        "chunk_id": "gold-chunk",
+        "chunk_id": chunk_id,
         "document_id": "doc-1",
         "chunk_index": 0,
-        "content": "测试答案",
+        "content": content,
         "chapter": None,
         "heading": "测试标题",
         "heading_type": None,
         "embedding_model": "test-model",
-        "score": 0.90,
+        "score": score,
     }
 
 
@@ -50,6 +54,11 @@ class TestEvaluateRetrieval:
             runner,
             "embed_text",
             lambda text: [0.0],
+        )
+        monkeypatch.setattr(
+            runner,
+            "search_chunks",
+            lambda query, top_k: [make_chunk()],
         )
         monkeypatch.setattr(
             runner,
@@ -105,6 +114,11 @@ class TestEvaluateRetrieval:
         )
         monkeypatch.setattr(
             runner,
+            "search_chunks",
+            lambda query, top_k: [make_chunk()],
+        )
+        monkeypatch.setattr(
+            runner,
             "search_chunks_with_context",
             fake_fixed,
         )
@@ -130,6 +144,68 @@ class TestEvaluateRetrieval:
             "max_chunks": 2,
         }
         assert result["strategy"] == "fixed"
+
+    def test_candidate_recall_differs_from_final_evidence_recall(
+        self,
+        monkeypatch,
+    ):
+        dataset = {
+            "version": "test-v1",
+            "items": [
+                {
+                    "id": "q001",
+                    "question": "测试问题",
+                    "relevant_chunk_ids": [
+                        "gold-1",
+                        "gold-2",
+                    ],
+                    "category": "cross_chunk",
+                }
+            ],
+        }
+        candidates = [
+            make_chunk("gold-1", score=0.90),
+            make_chunk("gold-2", score=0.85),
+            make_chunk("noise", score=0.80),
+        ]
+
+        monkeypatch.setattr(
+            runner,
+            "embed_text",
+            lambda text: [0.0],
+        )
+        monkeypatch.setattr(
+            runner,
+            "search_chunks",
+            lambda query, top_k: candidates,
+        )
+        monkeypatch.setattr(
+            runner,
+            "search_chunks_dynamic",
+            lambda query, **kwargs: [candidates[0]],
+        )
+
+        result = runner.evaluate_retrieval(
+            dataset,
+            retrieval_strategy="dynamic",
+            candidate_k=3,
+            max_k=2,
+            min_score=0.55,
+            min_relative_score=0.85,
+            metric_k=2,
+        )
+
+        item = result["items"][0]
+
+        assert item["candidate_recall"] == 1.0
+        assert item["final_evidence_recall"] == 0.5
+        assert item["candidate_chunk_ids"] == [
+            "gold-1",
+            "gold-2",
+            "noise",
+        ]
+        assert result["aggregate"]["candidate_recall"] == 1.0
+        assert result["aggregate"]["final_evidence_recall"] == 0.5
 
     def test_invalid_strategy_raises_error(self):
         with pytest.raises(ValueError):
