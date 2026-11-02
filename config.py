@@ -27,5 +27,8 @@ class Settings(BaseSettings):
     retrieval_min_score: float = 0.55
     retrieval_min_relative_score: float = 0.85
 
+    rerank_model: str = "models/bge-reranker-base"
+    rerank_batch_size: int = 16
+
 
 settings = Settings()

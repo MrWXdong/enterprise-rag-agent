@@ -3,6 +3,10 @@ from config import settings
 from database import get_connection
 from embedding_service import embed_text, embed_texts
 from retrieval_policy import select_dynamic_top_k
+from reranker_service import (
+    rerank_chunks,
+    select_reranked_top_k,
+)
 
 
 def store_chunks(chunks: list[dict]) -> int:
@@ -238,4 +242,39 @@ def search_chunks_dynamic(
         max_k=max_k,
         min_score=min_score,
         min_relative_score=min_relative_score,
+    )
+
+
+def search_chunks_reranked(
+    query: str,
+    candidate_k: int = 5,
+    max_k: int = 2,
+    min_probability: float = 0.0,
+    min_relative_probability: float = 0.0,
+) -> list[dict]:
+    """先对全部候选执行 Rerank，再按概率筛选最终证据。"""
+
+    if candidate_k <= 0:
+        raise ValueError("candidate_k 必须大于0")
+    if max_k <= 0:
+        raise ValueError("max_k 必须大于0")
+
+    candidates = search_chunks(
+        query,
+        top_k=candidate_k,
+    )
+
+    if not candidates:
+        return []
+
+    reranked_chunks = rerank_chunks(
+        query,
+        candidates,
+    )
+
+    return select_reranked_top_k(
+        reranked_chunks,
+        max_k=max_k,
+        min_probability=min_probability,
+        min_relative_probability=min_relative_probability,
     )

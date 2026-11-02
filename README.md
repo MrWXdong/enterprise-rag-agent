@@ -31,8 +31,10 @@
 - DeepSeek RAG 问答和来源返回
 - Pytest 自动化测试
 - Recall@K、Precision@K、MRR、nDCG@K 评测基础设施
-- 动态Top-K 候选过滤和上下文数量控制
+- 动态 Top-K 候选过滤和上下文数量控制
 - 低分证据可信拒答
+- 本地 CrossEncoder Rerank 和全部候选重排
+- Rerank 概率筛选与候选级评测审计
 
 ## 系统架构
 
@@ -100,9 +102,18 @@ next_chunk_id
 
 基础检索只返回相似度最高的种子 Chunk。系统可以继续查询同文档中的前后 Chunk，并按照 `chunk_id` 去重，减少因切分造成的上下文缺失。
 
-### 动态Top-K
+### 动态 Top-K
 
-系统先召回`candidate_k`个候选，然后根据当前问题的分数分布选择最终证据。
+系统先召回 `candidate_k` 个候选，再根据当前问题的向量分数分布选择最终证据。
+
+### Rerank
+
+系统支持本地 `BAAI/bge-reranker-base` CrossEncoder：
+
+- 全部候选先执行 Rerank，再执行概率筛选
+- 不会在 Rerank 前用向量阈值删除候选
+- 保存向量分数、Rerank logit 和 sigmoid 概率
+- Rerank 路径目前仅用于离线评测，`/chat` 仍使用动态 Top-K
 
 ## 项目结构
 
@@ -118,6 +129,7 @@ enterprise_rag_agent/
 ├── chunk_builder.py           # 结构化 Chunk 构建
 ├── document_store.py          # 文件、元数据和别名管理
 ├── embedding_service.py       # Embedding 模型加载与向量生成
+├── reranker_service.py        # 本地 Rerank 模型和概率筛选
 ├── pgvector_retriever.py      # 向量写入、检索和上下文扩展
 ├── memory_retriever.py        # 内存检索基线
 ├── prompt_builder.py          # RAG Prompt 构建
@@ -162,6 +174,9 @@ POSTGRES_DB=rag_db
 POSTGRES_PORT=5432
 
 DATABASE_URL=postgresql://rag_user:change_me@localhost:5432/rag_db
+
+RERANK_MODEL=models/bge-reranker-base
+RERANK_BATCH_SIZE=16
 ```
 
 `.env` 不应提交到 Git。
@@ -235,7 +250,7 @@ http://127.0.0.1:8000/docs
 pytest -q
 ```
 
-测试覆盖文档解析、切分、Chunk 构建、文件与元数据管理、Embedding、内存检索、PgVector 检索和 API 基础接口。
+测试覆盖文档解析、切分、Chunk 构建、文件与元数据管理、Embedding、内存检索、PgVector 检索、本地 Rerank 和 API 基础接口。
 
 ## 检索评测
 
@@ -262,29 +277,44 @@ python -m evaluation.runner `
   --metric-k 5
 ```
 
+运行 Rerank 检索方案：
+
+```powershell
+python -m evaluation.runner `
+  --retrieval-strategy dynamic_rerank `
+  --candidate-k 5 `
+  --max-k 2 `
+  --min-probability 0.60 `
+  --min-relative-probability 0.85 `
+  --metric-k 5
+```
+
 评测结果保存在：
 
 ```text
 evaluation/results/
 ```
 
-当前评测集仍处于扩充阶段。后续会使用固定问题集对比不同切分、混合检索和 Rerank 方案。
+当前评测集仍处于扩充阶段。v4 共包含 22 道问题，其中 18 道参与检索指标计算，另有 2 道无答案题和 2 道歧义题。
 
-### v2 检索评测
+### v4 检索评测
 
-| 策略 | Recall@5 | Precision@5 | MRR | nDCG@5 | 平均上下文数 |
+| 策略 | Final Recall | Precision@5 | MRR | nDCG@5 | 平均上下文数 |
 |---|---:|---:|---:|---:|---:|
-| 固定 K=2 | 1.0000 | 0.6250 | 0.9375 | 0.9539 | 2.0 |
-| 动态 Top-K | 1.0000 | 0.8125 | 0.9375 | 0.9539 | 1.5 |
+| 固定 K=2 | 1.0000 | 0.6111 | 0.9722 | 0.9795 | 2.0000 |
+| 动态 Top-K | 0.9722 | 0.8333 | 0.9722 | 0.9580 | 1.4091 |
+| Rerank 阈值 0 | 1.0000 | 0.6111 | 1.0000 | 1.0000 | 2.0000 |
+| Rerank 0.60/0.85 | 1.0000 | 0.9167 | 1.0000 | 1.0000 | 1.2727 |
 
-动态策略保持 Recall 和排序质量不变，将 Precision 从 `0.625` 提升到 `0.8125`，平均上下文数量从 `2.0` 降至 `1.5`。该结果来自当前较小评测集，不代表生产环境通用结论。
+Rerank 后排序指标达到当前评测集的理想值，多 Gold 题没有丢失证据，两道无答案题均返回空列表。CPU 环境下 Rerank 平均延迟约 551ms，暂未接入在线问答。
 
 ## 后续路线
 
 - [ ] 扩充检索评测集和测试文档
 - [ ] 接入 BM25 稀疏检索
 - [ ] 实现 BM25 + 向量混合召回
-- [ ] 接入 Rerank 精排
+- [x] 接入本地 Rerank 精排与离线评测
+- [ ] 将 Rerank 接入在线问答
 - [x] 增加动态 Top-K 证据数量控制
 - [ ] 增加 Prompt Token 预算和动态截断
 - [ ] 增加证据充分性判断和可信拒答
@@ -299,11 +329,12 @@ evaluation/results/
 
 - 目前主要验证 TXT 文档处理链路
 - 当前 Embedding 表固定为 512 维，切换模型需要重建向量表
-- 尚未接入 BM25、Rerank 和 LangGraph Agent
+- 尚未接入 BM25 和 LangGraph Agent
+- Rerank 目前仅用于离线评测，`/chat` 仍使用动态 Top-K
 - 评测集规模仍较小，当前指标不作为最终求职数据
 - 文件本地存储尚未替换为对象存储
-- 动态 Top-K 阈值基于当前 10 道题的 v2 评测集，仍需扩充数据后重新校准
-- 动态 Top-K 不能处理错误候选排第一的问题，后续需要 Rerank
+- 动态 Top-K 和 Rerank 阈值均基于当前 v4 小规模评测集，仍需扩充数据后重新校准
+- Rerank 在 CPU 环境下平均延迟约 551ms，尚未完成在线性能优化
 - 宽泛问题仍可能召回证据，需要增加歧义识别和证据充分性判断
 
 ## 安全说明

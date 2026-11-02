@@ -9,6 +9,10 @@ from pgvector_retriever import (
     search_chunks_dynamic,
     search_chunks_with_context,
 )
+from reranker_service import (
+    rerank_chunks,
+    select_reranked_top_k,
+)
 
 from evaluation.metrics import (
     mean,
@@ -42,13 +46,17 @@ def evaluate_retrieval(
     max_k: int = 2,
     min_score: float = 0.55,
     min_relative_score: float = 0.85,
+    min_probability: float = 0.0,
+    min_relative_probability: float = 0.0,
 ) -> dict:
     """运行检索评测，并汇总整体及分类指标。"""
 
-    if retrieval_strategy not in {"fixed", "dynamic"}:
-        raise ValueError("retrieval_strategy 必须是 fixed 或 dynamic")
+    if retrieval_strategy not in {"fixed", "dynamic", "dynamic_rerank"}:
+        raise ValueError(
+            "retrieval_strategy 必须是 fixed、dynamic 或 dynamic_rerank"
+        )
 
-    if retrieval_strategy == "dynamic":
+    if retrieval_strategy in {"dynamic", "dynamic_rerank"}:
         if candidate_k <= 0:
             raise ValueError("candidate_k 必须大于0")
         if max_k <= 0:
@@ -57,6 +65,12 @@ def evaluate_retrieval(
             raise ValueError("min_score 必须在 -1 到 1 之间")
         if not 0 <= min_relative_score <= 1:
             raise ValueError("min_relative_score 必须在 0 到 1 之间")
+        if not 0 <= min_probability <= 1:
+            raise ValueError("min_probability 必须在 0 到 1 之间")
+        if not 0 <= min_relative_probability <= 1:
+            raise ValueError(
+                "min_relative_probability 必须在 0 到 1 之间"
+            )
     else:
         if retrieval_top_k <= 0:
             raise ValueError("retrieval_top_k 必须大于0")
@@ -93,10 +107,45 @@ def evaluate_retrieval(
             round(float(chunk["score"]), 6)
             for chunk in candidate_chunks
         ]
+        candidate_rerank_scores = [None] * len(candidate_chunks)
+        candidate_rerank_probabilities = [None] * len(candidate_chunks)
 
         start_time = time.perf_counter()
 
-        if retrieval_strategy == "dynamic":
+        if retrieval_strategy == "dynamic_rerank":
+            reranked_candidates = rerank_chunks(
+                query,
+                candidate_chunks,
+            )
+            rerank_by_chunk_id = {
+                chunk["chunk_id"]: chunk
+                for chunk in reranked_candidates
+            }
+            candidate_rerank_scores = [
+                round(
+                    float(rerank_by_chunk_id[chunk_id]["rerank_score"]),
+                    6,
+                )
+                for chunk_id in candidate_ids
+            ]
+            candidate_rerank_probabilities = [
+                round(
+                    float(
+                        rerank_by_chunk_id[chunk_id][
+                            "rerank_probability"
+                        ]
+                    ),
+                    6,
+                )
+                for chunk_id in candidate_ids
+            ]
+            chunks = select_reranked_top_k(
+                reranked_candidates,
+                max_k=max_k,
+                min_probability=min_probability,
+                min_relative_probability=min_relative_probability,
+            )
+        elif retrieval_strategy == "dynamic":
             chunks = search_chunks_dynamic(
                 query,
                 candidate_k=candidate_k,
@@ -114,15 +163,49 @@ def evaluate_retrieval(
 
         latency_ms = (time.perf_counter() - start_time) * 1000
 
-        # 检索评测统一按相似度降序计算排名。
-        ranked_chunks = sorted(
-            chunks,
-            key=lambda chunk: chunk["score"],
-            reverse=True,
-        )
+        # Rerank 策略按重排分数计算指标，其他策略按向量相似度计算。
+        if retrieval_strategy == "dynamic_rerank":
+            ranked_chunks = sorted(
+                chunks,
+                key=lambda chunk: (
+                    chunk["rerank_score"],
+                    chunk.get("retrieval_score", chunk["score"]),
+                    chunk["chunk_id"],
+                ),
+                reverse=True,
+            )
+        else:
+            ranked_chunks = sorted(
+                chunks,
+                key=lambda chunk: chunk["score"],
+                reverse=True,
+            )
 
         retrieved_ids = [chunk["chunk_id"] for chunk in ranked_chunks]
         retrieved_scores = [round(float(chunk["score"]), 6) for chunk in ranked_chunks]
+        retrieved_retrieval_scores = [
+            round(
+                float(chunk.get("retrieval_score", chunk["score"])),
+                6,
+            )
+            for chunk in ranked_chunks
+        ]
+        retrieved_rerank_scores = [
+            (
+                round(float(chunk["rerank_score"]), 6)
+                if chunk.get("rerank_score") is not None
+                else None
+            )
+            for chunk in ranked_chunks
+        ]
+        retrieved_rerank_probabilities = [
+            (
+                round(float(chunk["rerank_probability"]), 6)
+                if chunk.get("rerank_probability") is not None
+                else None
+            )
+            for chunk in ranked_chunks
+        ]
         retrieved_chunk_indices = [chunk["chunk_index"] for chunk in ranked_chunks]
         retrieved_headings = [chunk.get("heading") for chunk in ranked_chunks]
 
@@ -134,6 +217,9 @@ def evaluate_retrieval(
                 set(candidate_ids) & set(relevant_ids)
             )
             candidate_recall = candidate_hits / len(relevant_ids)
+        candidate_is_relevant = [
+            chunk_id in relevant_ids for chunk_id in candidate_ids
+        ]
         should_evaluate = category not in {"no_answer", "ambiguous"} and bool(
             relevant_ids
         )
@@ -144,10 +230,18 @@ def evaluate_retrieval(
             "category": category,
             "retrieved_chunk_ids": retrieved_ids,
             "retrieved_scores": retrieved_scores,
+            "retrieved_retrieval_scores": retrieved_retrieval_scores,
+            "retrieved_rerank_scores": retrieved_rerank_scores,
+            "retrieved_rerank_probabilities": retrieved_rerank_probabilities,
             "retrieved_chunk_indices": retrieved_chunk_indices,
             "retrieved_headings": retrieved_headings,
             "candidate_chunk_ids": candidate_ids,
             "candidate_scores": candidate_scores,
+            "candidate_rerank_scores": candidate_rerank_scores,
+            "candidate_rerank_probabilities": (
+                candidate_rerank_probabilities
+            ),
+            "candidate_is_relevant": candidate_is_relevant,
             "candidate_recall": candidate_recall,
             "relevant_chunk_ids": relevant_ids,
             "context_size": len(retrieved_ids),
@@ -256,6 +350,8 @@ def evaluate_retrieval(
         "max_k": max_k,
         "min_score": min_score,
         "min_relative_score": min_relative_score,
+        "min_probability": min_probability,
+        "min_relative_probability": min_relative_probability,
         "metric_k": metric_k,
         "neighbor_window": neighbor_window,
         "max_chunks": max_chunks,
@@ -276,10 +372,27 @@ def build_output_path(
     max_k: int,
     min_score: float,
     min_relative_score: float,
+    min_probability: float = 0.0,
+    min_relative_probability: float = 0.0,
 ) -> Path:
     """根据数据集和实验参数生成独立结果文件名。"""
 
     version_name = str(dataset_version).replace(" ", "_")
+
+    if retrieval_strategy == "dynamic_rerank":
+        probability_name = f"{min_probability:.2f}".replace(".", "")
+        relative_probability_name = (
+            f"{min_relative_probability:.2f}".replace(".", "")
+        )
+
+        return RESULTS_DIR / (
+            f"rerank_dataset-{version_name}"
+            f"_candidate{candidate_k}"
+            f"_max{max_k}"
+            f"_prob{probability_name}"
+            f"_relative{relative_probability_name}"
+            f"_metric{metric_k}.json"
+        )
 
     if retrieval_strategy == "dynamic":
         score_name = f"{min_score:.2f}".replace(".", "")
@@ -315,7 +428,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--retrieval-strategy",
-        choices=["fixed", "dynamic"],
+        choices=["fixed", "dynamic", "dynamic_rerank"],
         default="fixed",
     )
     parser.add_argument(
@@ -358,6 +471,16 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=0.85,
     )
+    parser.add_argument(
+        "--min-probability",
+        type=float,
+        default=0.0,
+    )
+    parser.add_argument(
+        "--min-relative-probability",
+        type=float,
+        default=0.0,
+    )
 
     return parser.parse_args()
 
@@ -377,6 +500,8 @@ def main() -> None:
         max_k=args.max_k,
         min_score=args.min_score,
         min_relative_score=args.min_relative_score,
+        min_probability=args.min_probability,
+        min_relative_probability=args.min_relative_probability,
     )
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -392,6 +517,8 @@ def main() -> None:
         args.max_k,
         args.min_score,
         args.min_relative_score,
+        args.min_probability,
+        args.min_relative_probability,
     )
 
     output_path.write_text(

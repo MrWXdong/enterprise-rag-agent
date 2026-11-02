@@ -1,0 +1,1837 @@
+{
+  "dataset_version": "v4",
+  "strategy": "dynamic_rerank",
+  "retrieval_top_k": 5,
+  "candidate_k": 5,
+  "max_k": 2,
+  "min_score": 0.55,
+  "min_relative_score": 0.85,
+  "min_probability": 0.0,
+  "min_relative_probability": 0.0,
+  "metric_k": 5,
+  "neighbor_window": 1,
+  "max_chunks": 15,
+  "aggregate": {
+    "evaluated_item_count": 18,
+    "candidate_recall": 1.0,
+    "final_evidence_recall": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 0.6111111111111112,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "context_recall": 1.0,
+    "context_precision": 0.6111111111111112,
+    "average_context_size": 2.0,
+    "average_latency_ms": 570.5036363636364,
+    "average_candidate_latency_ms": 44.37090909090909
+  },
+  "metrics_by_category": {
+    "cross_chunk": {
+      "item_count": 3,
+      "candidate_recall": 1.0,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    "paraphrase": {
+      "item_count": 3,
+      "candidate_recall": 1.0,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.6666666666666666,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.6666666666666666
+    },
+    "single_chunk": {
+      "item_count": 12,
+      "candidate_recall": 1.0,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "mrr": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    }
+  },
+  "items": [
+    {
+      "id": "q001",
+      "question": "一类城市普通员工住宿费每天最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "retrieved_scores": [
+        0.731473,
+        0.652096
+      ],
+      "retrieved_retrieval_scores": [
+        0.731473,
+        0.652096
+      ],
+      "retrieved_rerank_scores": [
+        0.990695,
+        0.565076
+      ],
+      "retrieved_rerank_probabilities": [
+        0.729225,
+        0.637626
+      ],
+      "retrieved_chunk_indices": [
+        4,
+        5
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准",
+        "第五条 餐饮补贴"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+      ],
+      "candidate_scores": [
+        0.731473,
+        0.652096,
+        0.628849,
+        0.621698,
+        0.585752
+      ],
+      "candidate_rerank_scores": [
+        0.990695,
+        0.565076,
+        0.015767,
+        0.006549,
+        0.017284
+      ],
+      "candidate_rerank_probabilities": [
+        0.729225,
+        0.637626,
+        0.503942,
+        0.501637,
+        0.504321
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 2,
+      "latency_ms": 3810.35,
+      "candidate_latency_ms": 74.78,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q002",
+      "question": "二类城市部门负责人住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "retrieved_scores": [
+        0.709844,
+        0.598046
+      ],
+      "retrieved_retrieval_scores": [
+        0.709844,
+        0.598046
+      ],
+      "retrieved_rerank_scores": [
+        0.998676,
+        0.101025
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730798,
+        0.525235
+      ],
+      "retrieved_chunk_indices": [
+        4,
+        5
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准",
+        "第五条 餐饮补贴"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+      ],
+      "candidate_scores": [
+        0.709844,
+        0.611167,
+        0.602653,
+        0.598046,
+        0.544937
+      ],
+      "candidate_rerank_scores": [
+        0.998676,
+        0.006679,
+        0.014073,
+        0.101025,
+        0.0302
+      ],
+      "candidate_rerank_probabilities": [
+        0.730798,
+        0.50167,
+        0.503518,
+        0.525235,
+        0.507549
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 2,
+      "latency_ms": 617.26,
+      "candidate_latency_ms": 55.75,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q003",
+      "question": "三类城市普通员工住宿费每晚最高多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "retrieved_scores": [
+        0.765251,
+        0.609484
+      ],
+      "retrieved_retrieval_scores": [
+        0.765251,
+        0.609484
+      ],
+      "retrieved_rerank_scores": [
+        0.99905,
+        0.062444
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730872,
+        0.515606
+      ],
+      "retrieved_chunk_indices": [
+        4,
+        5
+      ],
+      "retrieved_headings": [
+        "第四条 住宿费用标准",
+        "第五条 餐饮补贴"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+      ],
+      "candidate_scores": [
+        0.765251,
+        0.635497,
+        0.616428,
+        0.609484,
+        0.605324
+      ],
+      "candidate_rerank_scores": [
+        0.99905,
+        0.011612,
+        0.015497,
+        0.062444,
+        0.023158
+      ],
+      "candidate_rerank_probabilities": [
+        0.730872,
+        0.502903,
+        0.503874,
+        0.515606,
+        0.505789
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "context_size": 2,
+      "latency_ms": 567.24,
+      "candidate_latency_ms": 42.55,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q004",
+      "question": "一类城市每天餐饮补贴是多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.815306,
+        0.549883
+      ],
+      "retrieved_retrieval_scores": [
+        0.815306,
+        0.549883
+      ],
+      "retrieved_rerank_scores": [
+        0.998807,
+        0.1153
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730824,
+        0.528793
+      ],
+      "retrieved_chunk_indices": [
+        5,
+        4
+      ],
+      "retrieved_headings": [
+        "第五条 餐饮补贴",
+        "第四条 住宿费用标准"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
+      "candidate_scores": [
+        0.815306,
+        0.549883,
+        0.532643,
+        0.480641,
+        0.442825
+      ],
+      "candidate_rerank_scores": [
+        0.998807,
+        0.1153,
+        0.005801,
+        0.000787,
+        0.001188
+      ],
+      "candidate_rerank_probabilities": [
+        0.730824,
+        0.528793,
+        0.50145,
+        0.500197,
+        0.500297
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "context_size": 2,
+      "latency_ms": 549.4,
+      "candidate_latency_ms": 32.49,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q005",
+      "question": "出差结束后最晚多久提交报销？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "retrieved_scores": [
+        0.67767,
+        0.685316
+      ],
+      "retrieved_retrieval_scores": [
+        0.67767,
+        0.685316
+      ],
+      "retrieved_rerank_scores": [
+        0.994747,
+        0.915443
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730025,
+        0.714113
+      ],
+      "retrieved_chunk_indices": [
+        6,
+        2
+      ],
+      "retrieved_headings": [
+        "第六条 费用报销要求",
+        "第二条 出差申请流程"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "candidate_scores": [
+        0.685316,
+        0.67767,
+        0.647764,
+        0.614387,
+        0.614384
+      ],
+      "candidate_rerank_scores": [
+        0.915443,
+        0.994747,
+        0.66982,
+        0.471125,
+        0.350552
+      ],
+      "candidate_rerank_probabilities": [
+        0.714113,
+        0.730025,
+        0.661463,
+        0.61565,
+        0.586752
+      ],
+      "candidate_is_relevant": [
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "context_size": 2,
+      "latency_ms": 595.08,
+      "candidate_latency_ms": 59.57,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q006",
+      "question": "住宿标准和餐饮补贴分别是多少？",
+      "category": "cross_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.700193,
+        0.6761
+      ],
+      "retrieved_retrieval_scores": [
+        0.700193,
+        0.6761
+      ],
+      "retrieved_rerank_scores": [
+        0.959547,
+        0.500606
+      ],
+      "retrieved_rerank_probabilities": [
+        0.723031,
+        0.622602
+      ],
+      "retrieved_chunk_indices": [
+        5,
+        4
+      ],
+      "retrieved_headings": [
+        "第五条 餐饮补贴",
+        "第四条 住宿费用标准"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001"
+      ],
+      "candidate_scores": [
+        0.700193,
+        0.6761,
+        0.673486,
+        0.653526,
+        0.4912
+      ],
+      "candidate_rerank_scores": [
+        0.959547,
+        0.500606,
+        0.007329,
+        0.048412,
+        0.001151
+      ],
+      "candidate_rerank_probabilities": [
+        0.723031,
+        0.622602,
+        0.501832,
+        0.512101,
+        0.500288
+      ],
+      "candidate_is_relevant": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005"
+      ],
+      "context_size": 2,
+      "latency_ms": 565.64,
+      "candidate_latency_ms": 42.6,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q007",
+      "question": "住宿费用超出标准时怎么处理？",
+      "category": "paraphrase",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004"
+      ],
+      "retrieved_scores": [
+        0.846094,
+        0.732605
+      ],
+      "retrieved_retrieval_scores": [
+        0.846094,
+        0.732605
+      ],
+      "retrieved_rerank_scores": [
+        0.999035,
+        0.99368
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730869,
+        0.729814
+      ],
+      "retrieved_chunk_indices": [
+        29,
+        4
+      ],
+      "retrieved_headings": [
+        "问题七：住宿费超过标准怎么办？",
+        "第四条 住宿费用标准"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001"
+      ],
+      "candidate_scores": [
+        0.846094,
+        0.732605,
+        0.664886,
+        0.585318,
+        0.559564
+      ],
+      "candidate_rerank_scores": [
+        0.999035,
+        0.99368,
+        0.573669,
+        0.236108,
+        0.179617
+      ],
+      "candidate_rerank_probabilities": [
+        0.730869,
+        0.729814,
+        0.639609,
+        0.558754,
+        0.544784
+      ],
+      "candidate_is_relevant": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000004",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
+      "context_size": 2,
+      "latency_ms": 592.45,
+      "candidate_latency_ms": 39.43,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q008",
+      "question": "账号密码怎么设置？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014"
+      ],
+      "retrieved_scores": [
+        0.685048,
+        0.450374
+      ],
+      "retrieved_retrieval_scores": [
+        0.685048,
+        0.450374
+      ],
+      "retrieved_rerank_scores": [
+        0.492027,
+        0.03298
+      ],
+      "retrieved_rerank_probabilities": [
+        0.620584,
+        0.508244
+      ],
+      "retrieved_chunk_indices": [
+        12,
+        14
+      ],
+      "retrieved_headings": [
+        "第十二条 账号与密码",
+        "第十四条 终端安全"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032"
+      ],
+      "candidate_scores": [
+        0.685048,
+        0.525241,
+        0.505361,
+        0.450374,
+        0.424933
+      ],
+      "candidate_rerank_scores": [
+        0.492027,
+        0.0026,
+        0.000488,
+        0.03298,
+        0.00212
+      ],
+      "candidate_rerank_probabilities": [
+        0.620584,
+        0.50065,
+        0.500122,
+        0.508244,
+        0.50053
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
+      ],
+      "context_size": 2,
+      "latency_ms": 260.14,
+      "candidate_latency_ms": 35.97,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q009",
+      "question": "公司董事长私人手机号是多少？",
+      "category": "no_answer",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013"
+      ],
+      "retrieved_scores": [
+        0.513176,
+        0.488182
+      ],
+      "retrieved_retrieval_scores": [
+        0.513176,
+        0.488182
+      ],
+      "retrieved_rerank_scores": [
+        0.003274,
+        0.002525
+      ],
+      "retrieved_rerank_probabilities": [
+        0.500819,
+        0.500631
+      ],
+      "retrieved_chunk_indices": [
+        12,
+        13
+      ],
+      "retrieved_headings": [
+        "第十二条 账号与密码",
+        "第十三条 数据分类"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000019"
+      ],
+      "candidate_scores": [
+        0.513176,
+        0.488182,
+        0.459504,
+        0.453711,
+        0.445208
+      ],
+      "candidate_rerank_scores": [
+        0.003274,
+        0.002525,
+        0.000732,
+        0.000806,
+        0.000528
+      ],
+      "candidate_rerank_probabilities": [
+        0.500819,
+        0.500631,
+        0.500183,
+        0.500201,
+        0.500132
+      ],
+      "candidate_is_relevant": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": null,
+      "relevant_chunk_ids": [],
+      "context_size": 2,
+      "latency_ms": 321.76,
+      "candidate_latency_ms": 54.1
+    },
+    {
+      "id": "q010",
+      "question": "出差怎么处理？",
+      "category": "ambiguous",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007"
+      ],
+      "retrieved_scores": [
+        0.709966,
+        0.611532
+      ],
+      "retrieved_retrieval_scores": [
+        0.709966,
+        0.611532
+      ],
+      "retrieved_rerank_scores": [
+        0.807485,
+        0.796058
+      ],
+      "retrieved_rerank_probabilities": [
+        0.691573,
+        0.689131
+      ],
+      "retrieved_chunk_indices": [
+        2,
+        7
+      ],
+      "retrieved_headings": [
+        "第二条 出差申请流程",
+        "第七条 特殊情况"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "candidate_scores": [
+        0.709966,
+        0.627274,
+        0.611793,
+        0.611532,
+        0.567577
+      ],
+      "candidate_rerank_scores": [
+        0.807485,
+        0.044115,
+        0.420809,
+        0.796058,
+        0.164627
+      ],
+      "candidate_rerank_probabilities": [
+        0.691573,
+        0.511027,
+        0.603677,
+        0.689131,
+        0.541064
+      ],
+      "candidate_is_relevant": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": null,
+      "relevant_chunk_ids": [],
+      "context_size": 2,
+      "latency_ms": 384.8,
+      "candidate_latency_ms": 43.68
+    },
+    {
+      "id": "q011",
+      "question": "员工计划出差通常需要提前几个工作日提交申请？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "retrieved_scores": [
+        0.753511,
+        0.654035
+      ],
+      "retrieved_retrieval_scores": [
+        0.753511,
+        0.654035
+      ],
+      "retrieved_rerank_scores": [
+        0.998105,
+        0.916572
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730686,
+        0.714343
+      ],
+      "retrieved_chunk_indices": [
+        2,
+        6
+      ],
+      "retrieved_headings": [
+        "第二条 出差申请流程",
+        "第六条 费用报销要求"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000020",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "candidate_scores": [
+        0.753511,
+        0.69928,
+        0.687472,
+        0.684697,
+        0.654035
+      ],
+      "candidate_rerank_scores": [
+        0.998105,
+        0.833732,
+        0.896349,
+        0.648146,
+        0.916572
+      ],
+      "candidate_rerank_probabilities": [
+        0.730686,
+        0.697144,
+        0.710199,
+        0.656593,
+        0.714343
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "context_size": 2,
+      "latency_ms": 421.56,
+      "candidate_latency_ms": 34.46,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q012",
+      "question": "普通员工出差乘坐高铁原则上应选择什么座位？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "retrieved_scores": [
+        0.706329,
+        0.503816
+      ],
+      "retrieved_retrieval_scores": [
+        0.706329,
+        0.503816
+      ],
+      "retrieved_rerank_scores": [
+        0.99554,
+        0.061911
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730181,
+        0.515473
+      ],
+      "retrieved_chunk_indices": [
+        3,
+        2
+      ],
+      "retrieved_headings": [
+        "第三条 交通工具标准",
+        "第二条 出差申请流程"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "candidate_scores": [
+        0.706329,
+        0.544441,
+        0.508684,
+        0.503869,
+        0.503816
+      ],
+      "candidate_rerank_scores": [
+        0.99554,
+        0.019823,
+        0.012624,
+        0.020378,
+        0.061911
+      ],
+      "candidate_rerank_probabilities": [
+        0.730181,
+        0.504956,
+        0.503156,
+        0.505094,
+        0.515473
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000003"
+      ],
+      "context_size": 2,
+      "latency_ms": 452.35,
+      "candidate_latency_ms": 28.3,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q013",
+      "question": "电子发票报销时可以使用截图代替原始文件吗？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026"
+      ],
+      "retrieved_scores": [
+        0.668681,
+        0.561902
+      ],
+      "retrieved_retrieval_scores": [
+        0.668681,
+        0.561902
+      ],
+      "retrieved_rerank_scores": [
+        0.996139,
+        0.024386
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730299,
+        0.506096
+      ],
+      "retrieved_chunk_indices": [
+        6,
+        26
+      ],
+      "retrieved_headings": [
+        "第六条 费用报销要求",
+        "问题四：可以把源代码上传到个人网盘吗？"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000011",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000027"
+      ],
+      "candidate_scores": [
+        0.668681,
+        0.561902,
+        0.515835,
+        0.480265,
+        0.478094
+      ],
+      "candidate_rerank_scores": [
+        0.996139,
+        0.024386,
+        0.020717,
+        0.010187,
+        0.002881
+      ],
+      "candidate_rerank_probabilities": [
+        0.730299,
+        0.506096,
+        0.505179,
+        0.502547,
+        0.50072
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000006"
+      ],
+      "context_size": 2,
+      "latency_ms": 307.48,
+      "candidate_latency_ms": 27.47,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q014",
+      "question": "员工与供应商存在亲属关系时应如何处理？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000009",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022"
+      ],
+      "retrieved_scores": [
+        0.717514,
+        0.562488
+      ],
+      "retrieved_retrieval_scores": [
+        0.717514,
+        0.562488
+      ],
+      "retrieved_rerank_scores": [
+        0.969601,
+        0.070097
+      ],
+      "retrieved_rerank_probabilities": [
+        0.72504,
+        0.517517
+      ],
+      "retrieved_chunk_indices": [
+        9,
+        22
+      ],
+      "retrieved_headings": [
+        "第九条 供应商选择",
+        "第二十二条 离职交接"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000009",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "candidate_scores": [
+        0.717514,
+        0.562488,
+        0.541275,
+        0.524187,
+        0.517134
+      ],
+      "candidate_rerank_scores": [
+        0.969601,
+        0.070097,
+        0.012396,
+        0.015898,
+        0.003054
+      ],
+      "candidate_rerank_probabilities": [
+        0.72504,
+        0.517517,
+        0.503099,
+        0.503974,
+        0.500763
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000009"
+      ],
+      "context_size": 2,
+      "latency_ms": 338.46,
+      "candidate_latency_ms": 30.33,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q015",
+      "question": "生产数据库备份文件至少需要保留多少天？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000018"
+      ],
+      "retrieved_scores": [
+        0.754996,
+        0.56931
+      ],
+      "retrieved_retrieval_scores": [
+        0.754996,
+        0.56931
+      ],
+      "retrieved_rerank_scores": [
+        0.999871,
+        0.293604
+      ],
+      "retrieved_rerank_probabilities": [
+        0.731033,
+        0.572878
+      ],
+      "retrieved_chunk_indices": [
+        15,
+        18
+      ],
+      "retrieved_headings": [
+        "第十五条 数据备份",
+        "第十八条 事故复盘"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000018",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000027",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026"
+      ],
+      "candidate_scores": [
+        0.754996,
+        0.56931,
+        0.567324,
+        0.552639,
+        0.54732
+      ],
+      "candidate_rerank_scores": [
+        0.999871,
+        0.293604,
+        0.008493,
+        0.001339,
+        0.000676
+      ],
+      "candidate_rerank_probabilities": [
+        0.731033,
+        0.572878,
+        0.502123,
+        0.500335,
+        0.500169
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015"
+      ],
+      "context_size": 2,
+      "latency_ms": 267.76,
+      "candidate_latency_ms": 53.31,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q016",
+      "question": "紧急客户工单的响应时间是多少？",
+      "category": "single_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007"
+      ],
+      "retrieved_scores": [
+        0.729625,
+        0.536395
+      ],
+      "retrieved_retrieval_scores": [
+        0.729625,
+        0.536395
+      ],
+      "retrieved_rerank_scores": [
+        0.996497,
+        0.008562
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730369,
+        0.502141
+      ],
+      "retrieved_chunk_indices": [
+        16,
+        7
+      ],
+      "retrieved_headings": [
+        "第十六条 工单分级",
+        "第七条 特殊情况"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000019",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017"
+      ],
+      "candidate_scores": [
+        0.729625,
+        0.562956,
+        0.536395,
+        0.532862,
+        0.516807
+      ],
+      "candidate_rerank_scores": [
+        0.996497,
+        0.003085,
+        0.008562,
+        0.002864,
+        0.000637
+      ],
+      "candidate_rerank_probabilities": [
+        0.730369,
+        0.500771,
+        0.502141,
+        0.500716,
+        0.500159
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000016"
+      ],
+      "context_size": 2,
+      "latency_ms": 340.66,
+      "candidate_latency_ms": 50.8,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q017",
+      "question": "代码上线前需要完成哪些测试、备份和发布保障？",
+      "category": "cross_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017"
+      ],
+      "retrieved_scores": [
+        0.791325,
+        0.582312
+      ],
+      "retrieved_retrieval_scores": [
+        0.791325,
+        0.582312
+      ],
+      "retrieved_rerank_scores": [
+        0.999071,
+        0.983904
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730876,
+        0.727882
+      ],
+      "retrieved_chunk_indices": [
+        32,
+        17
+      ],
+      "retrieved_headings": [
+        "问题十：代码上线前必须具备什么条件？",
+        "第十七条 项目交付"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000015",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000026"
+      ],
+      "candidate_scores": [
+        0.791325,
+        0.582312,
+        0.573357,
+        0.53907,
+        0.527444
+      ],
+      "candidate_rerank_scores": [
+        0.999071,
+        0.983904,
+        0.035492,
+        0.018773,
+        0.013253
+      ],
+      "candidate_rerank_probabilities": [
+        0.730876,
+        0.727882,
+        0.508872,
+        0.504693,
+        0.503313
+      ],
+      "candidate_is_relevant": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032"
+      ],
+      "context_size": 2,
+      "latency_ms": 266.27,
+      "candidate_latency_ms": 34.97,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q018",
+      "question": "员工离职时需要交接哪些内容，离职后能否保留公司文档？",
+      "category": "cross_chunk",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022"
+      ],
+      "retrieved_scores": [
+        0.824116,
+        0.756215
+      ],
+      "retrieved_retrieval_scores": [
+        0.824116,
+        0.756215
+      ],
+      "retrieved_rerank_scores": [
+        0.999773,
+        0.999556
+      ],
+      "retrieved_rerank_probabilities": [
+        0.731014,
+        0.730971
+      ],
+      "retrieved_chunk_indices": [
+        28,
+        22
+      ],
+      "retrieved_headings": [
+        "问题六：员工离职后能否保留公司文档？",
+        "第二十二条 离职交接"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000012"
+      ],
+      "candidate_scores": [
+        0.824116,
+        0.756215,
+        0.631503,
+        0.56063,
+        0.555185
+      ],
+      "candidate_rerank_scores": [
+        0.999773,
+        0.999556,
+        0.13485,
+        0.253005,
+        0.184754
+      ],
+      "candidate_rerank_probabilities": [
+        0.731014,
+        0.730971,
+        0.533661,
+        0.562916,
+        0.546058
+      ],
+      "candidate_is_relevant": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000022",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000028"
+      ],
+      "context_size": 2,
+      "latency_ms": 425.92,
+      "candidate_latency_ms": 49.01,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q019",
+      "question": "项目执行过程中客户提出新增需求，团队应先做什么？",
+      "category": "paraphrase",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000008"
+      ],
+      "retrieved_scores": [
+        0.631218,
+        0.573302
+      ],
+      "retrieved_retrieval_scores": [
+        0.631218,
+        0.573302
+      ],
+      "retrieved_rerank_scores": [
+        0.626919,
+        0.052059
+      ],
+      "retrieved_rerank_probabilities": [
+        0.65179,
+        0.513012
+      ],
+      "retrieved_chunk_indices": [
+        17,
+        8
+      ],
+      "retrieved_headings": [
+        "第十七条 项目交付",
+        "第八条 采购申请"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000008",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000021",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "candidate_scores": [
+        0.631218,
+        0.578301,
+        0.573302,
+        0.566103,
+        0.553991
+      ],
+      "candidate_rerank_scores": [
+        0.626919,
+        0.00382,
+        0.052059,
+        0.011281,
+        0.006518
+      ],
+      "candidate_rerank_probabilities": [
+        0.65179,
+        0.500955,
+        0.513012,
+        0.50282,
+        0.50163
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000017"
+      ],
+      "context_size": 2,
+      "latency_ms": 454.81,
+      "candidate_latency_ms": 31.16,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q020",
+      "question": "员工出差期间因病无法继续工作，应如何处理？",
+      "category": "paraphrase",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002"
+      ],
+      "retrieved_scores": [
+        0.747843,
+        0.638824
+      ],
+      "retrieved_retrieval_scores": [
+        0.747843,
+        0.638824
+      ],
+      "retrieved_rerank_scores": [
+        0.998547,
+        0.383834
+      ],
+      "retrieved_rerank_probabilities": [
+        0.730773,
+        0.594798
+      ],
+      "retrieved_chunk_indices": [
+        7,
+        2
+      ],
+      "retrieved_headings": [
+        "第七条 特殊情况",
+        "第二条 出差申请流程"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000023",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000002",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000029"
+      ],
+      "candidate_scores": [
+        0.747843,
+        0.664834,
+        0.638824,
+        0.632006,
+        0.582814
+      ],
+      "candidate_rerank_scores": [
+        0.998547,
+        0.043667,
+        0.383834,
+        0.176781,
+        0.106374
+      ],
+      "candidate_rerank_probabilities": [
+        0.730773,
+        0.510915,
+        0.594798,
+        0.544081,
+        0.526568
+      ],
+      "candidate_is_relevant": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": 1.0,
+      "relevant_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000007"
+      ],
+      "context_size": 2,
+      "latency_ms": 451.67,
+      "candidate_latency_ms": 47.64,
+      "final_evidence_recall": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "id": "q021",
+      "question": "公司去年实现多少营业收入？",
+      "category": "no_answer",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000020"
+      ],
+      "retrieved_scores": [
+        0.520322,
+        0.458916
+      ],
+      "retrieved_retrieval_scores": [
+        0.520322,
+        0.458916
+      ],
+      "retrieved_rerank_scores": [
+        0.015748,
+        0.000333
+      ],
+      "retrieved_rerank_probabilities": [
+        0.503937,
+        0.500083
+      ],
+      "retrieved_chunk_indices": [
+        5,
+        20
+      ],
+      "retrieved_headings": [
+        "第五条 餐饮补贴",
+        "第二十条 年假"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000005",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000030",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000020",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000024",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000021"
+      ],
+      "candidate_scores": [
+        0.520322,
+        0.490131,
+        0.458916,
+        0.456658,
+        0.448338
+      ],
+      "candidate_rerank_scores": [
+        0.015748,
+        0.000264,
+        0.000333,
+        3.7e-05,
+        9.2e-05
+      ],
+      "candidate_rerank_probabilities": [
+        0.503937,
+        0.500066,
+        0.500083,
+        0.500009,
+        0.500023
+      ],
+      "candidate_is_relevant": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": null,
+      "relevant_chunk_ids": [],
+      "context_size": 2,
+      "latency_ms": 258.07,
+      "candidate_latency_ms": 52.77
+    },
+    {
+      "id": "q022",
+      "question": "公司的安全要求是什么？",
+      "category": "ambiguous",
+      "retrieved_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013"
+      ],
+      "retrieved_scores": [
+        0.586446,
+        0.517765
+      ],
+      "retrieved_retrieval_scores": [
+        0.586446,
+        0.517765
+      ],
+      "retrieved_rerank_scores": [
+        0.938557,
+        0.23739
+      ],
+      "retrieved_rerank_probabilities": [
+        0.718808,
+        0.55907
+      ],
+      "retrieved_chunk_indices": [
+        14,
+        13
+      ],
+      "retrieved_headings": [
+        "第十四条 终端安全",
+        "第十三条 数据分类"
+      ],
+      "candidate_chunk_ids": [
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000014",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000009",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000032",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000001",
+        "a4ea312ba60f462294dc1244952e2c44_chunk_000013"
+      ],
+      "candidate_scores": [
+        0.586446,
+        0.553285,
+        0.532192,
+        0.518369,
+        0.517765
+      ],
+      "candidate_rerank_scores": [
+        0.938557,
+        0.179686,
+        0.076522,
+        0.114792,
+        0.23739
+      ],
+      "candidate_rerank_probabilities": [
+        0.718808,
+        0.544801,
+        0.519121,
+        0.528667,
+        0.55907
+      ],
+      "candidate_is_relevant": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "candidate_recall": null,
+      "relevant_chunk_ids": [],
+      "context_size": 2,
+      "latency_ms": 301.95,
+      "candidate_latency_ms": 55.02
+    }
+  ]
+}

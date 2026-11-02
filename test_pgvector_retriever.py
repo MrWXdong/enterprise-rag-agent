@@ -395,3 +395,159 @@ class TestSearchChunksDynamic:
                 "测试问题",
                 candidate_k=0,
             )
+
+
+class TestSearchChunksReranked:
+    def test_all_candidates_are_reranked_before_filtering(
+        self,
+        monkeypatch,
+    ):
+        candidates = [
+            {
+                "chunk_id": "chunk-1",
+                "content": "候选一",
+                "score": 0.80,
+            },
+            {
+                "chunk_id": "chunk-2",
+                "content": "候选二",
+                "score": 0.40,
+            },
+            {
+                "chunk_id": "chunk-3",
+                "content": "候选三",
+                "score": 0.20,
+            },
+        ]
+        captured = {}
+
+        def fake_rerank(query, chunks):
+            captured["query"] = query
+            captured["chunks"] = chunks
+            return [
+                {
+                    **chunks[0],
+                    "retrieval_score": 0.80,
+                    "rerank_score": 0.0,
+                    "rerank_probability": 0.50,
+                },
+                {
+                    **chunks[1],
+                    "retrieval_score": 0.40,
+                    "rerank_score": 3.0,
+                    "rerank_probability": 0.95,
+                },
+                {
+                    **chunks[2],
+                    "retrieval_score": 0.20,
+                    "rerank_score": 1.0,
+                    "rerank_probability": 0.73,
+                },
+            ]
+
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "search_chunks",
+            lambda query, top_k: candidates,
+        )
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "rerank_chunks",
+            fake_rerank,
+        )
+
+        results = pgvector_retriever.search_chunks_reranked(
+            "测试问题",
+            candidate_k=3,
+            max_k=2,
+            min_probability=0.50,
+            min_relative_probability=0.80,
+        )
+
+        assert captured["query"] == "测试问题"
+        assert [chunk["chunk_id"] for chunk in captured["chunks"]] == [
+            "chunk-1",
+            "chunk-2",
+            "chunk-3",
+        ]
+        assert [chunk["chunk_id"] for chunk in results] == [
+            "chunk-2",
+        ]
+
+    def test_empty_candidates_skip_rerank(self, monkeypatch):
+        def unexpected_rerank(*args, **kwargs):
+            raise AssertionError("无候选时不应加载 Rerank 模型")
+
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "search_chunks",
+            lambda query, top_k: [],
+        )
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "rerank_chunks",
+            unexpected_rerank,
+        )
+
+        result = pgvector_retriever.search_chunks_reranked(
+            "无答案问题",
+            candidate_k=5,
+            max_k=2,
+        )
+
+        assert result == []
+
+    def test_final_result_respects_max_k(self, monkeypatch):
+        candidates = [
+            {
+                "chunk_id": f"chunk-{index}",
+                "content": f"候选-{index}",
+                "score": 0.50,
+            }
+            for index in range(4)
+        ]
+
+        def fake_rerank(query, chunks):
+            return [
+                {
+                    **chunk,
+                    "retrieval_score": chunk["score"],
+                    "rerank_score": 1.0,
+                    "rerank_probability": 0.90,
+                }
+                for chunk in chunks
+            ]
+
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "search_chunks",
+            lambda query, top_k: candidates,
+        )
+        monkeypatch.setattr(
+            pgvector_retriever,
+            "rerank_chunks",
+            fake_rerank,
+        )
+
+        results = pgvector_retriever.search_chunks_reranked(
+            "测试问题",
+            candidate_k=4,
+            max_k=2,
+            min_probability=0.0,
+            min_relative_probability=0.0,
+        )
+
+        assert len(results) == 2
+
+    def test_invalid_rerank_parameters_raise_error(self):
+        with pytest.raises(ValueError):
+            pgvector_retriever.search_chunks_reranked(
+                "测试问题",
+                candidate_k=0,
+            )
+
+        with pytest.raises(ValueError):
+            pgvector_retriever.search_chunks_reranked(
+                "测试问题",
+                max_k=0,
+            )
